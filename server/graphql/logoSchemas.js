@@ -8,6 +8,8 @@ var GraphQLString = require('graphql').GraphQLString;
 var GraphQLInt = require('graphql').GraphQLInt;
 var GraphQLDate = require('graphql-date');
 var LogoModel = require('../models/Logo');
+var TextModel = require('../models/Text');
+var ImageModel = require('../models/Image');
 
 var logoType = new GraphQLObjectType({
     name: 'logo',
@@ -16,15 +18,18 @@ var logoType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
-            text: {
-                type: GraphQLString
+            texts: {
+                type: GraphQLList(TextType)
             },
-            color: {
-                type: GraphQLString
+            images: {
+                type: GraphQLList(ImageType)
             },
-            fontSize: {
-                type: GraphQLInt
-            },
+            // color: {
+            //     type: GraphQLString
+            // },
+            // fontSize: {
+            //     type: GraphQLInt
+            // },
             backgroundColor:{
                 type: GraphQLString
             },
@@ -45,6 +50,61 @@ var logoType = new GraphQLObjectType({
             },
             lastUpdate: {
                 type: GraphQLDate
+            }
+        }
+    }
+});
+
+var TextType = new GraphQLObjectType({
+    name: 'text',
+    fields: function(){
+        return{
+            _id: {
+                type: GraphQLString
+            },
+            text: {
+                type: GraphQLString
+            },
+            color: {
+                type: GraphQLString
+            },
+            corX: {
+                type: GraphQLInt
+            },
+            corY: {
+                type: GraphQLInt
+            },
+            lastUpdate: {
+                type: GraphQLInt
+            }
+        }
+    }
+});
+
+var ImageType = new GraphQLObjectType({
+    name: 'image',
+    fields: function(){
+        return{
+            _id: {
+                type: GraphQLString
+            },
+            URL: {
+                type: GraphQLString
+            },
+            sizeX: {
+                type: GraphQLInt
+            },
+            sizeY: {
+                type: GraphQLInt
+            },
+            corX: {
+                type: GraphQLInt
+            },
+            corY: {
+                type: GraphQLInt
+            },
+            lastUpdate: {
+                type: GraphQLInt
             }
         }
     }
@@ -71,37 +131,101 @@ var queryType = new GraphQLObjectType({
                         name: '_id',
                         type: GraphQLString
                     },
-            text: {
-                type: GraphQLString
-            },
-            color: {
-                type: GraphQLString
-            },
-            fontSize: {
-                type: GraphQLInt
-            },
-            backgroundColor:{
-                type: GraphQLString
-            },
-            borderColor:{
-                type: GraphQLString
-            },
-            borderRadius:{
-                type: GraphQLInt
-            },
-            borderThickness:{
-                type: GraphQLInt
-            },
-            padding:{
-                type: GraphQLInt
-            },
-            margin:{
-                type: GraphQLInt
-            },
-            lastUpdate: {
-                type: GraphQLDate
-            }
+                texts: {
+                    type: new GraphQLList(TextType),
+                    resolve: function (){
+                        const texts = TextModel.find().exec()
+                        if (!texts){
+                            return null
+                        }
+                        return texts
+                    }
                 },
+                text: {
+                    type: TextType,
+                    args: {
+                        id: {
+                            name: '_id',
+                            type: GraphQLString
+                        },
+                    color: {
+                        type: GraphQLString
+                    },
+                    fontSize: {
+                        type: GraphQLString
+                    },
+                    corX: {
+                        type: GraphQLInt
+                    },
+                    corY: {
+                        type: GraphQLInt
+                    },
+                    lastUpdate: {
+                        type: GraphQLInt
+                    }
+
+                    }
+                },
+                images: {
+                    type: new GraphQLList(ImageType),
+                    resolve: function (){
+                        const images = ImageModel.find().exec()
+                        if (!images){
+                            return null
+                        }
+                        return images
+                    }
+                },
+                image: {
+                    type: ImageType,
+                    args: {
+                        id: {
+                            name: '_id',
+                            type: GraphQLString
+                        },
+                    URL: {
+                        type: GraphQLString
+                    },
+                    sizeX: {
+                        type: GraphQLInt
+                    },
+                    sizeY: {
+                        type: GraphQLInt
+                    },
+                    corX: {
+                        type: GraphQLInt
+                    },
+                    corY: {
+                        type: GraphQLInt
+                    },
+                    lastUpdate: {
+                        type: GraphQLInt
+                    }
+                    }
+
+                },
+                backgroundColor:{
+                    type: GraphQLString
+                },
+                borderColor:{
+                    type: GraphQLString
+                },
+                borderRadius:{
+                    type: GraphQLInt
+                },
+                borderThickness:{
+                    type: GraphQLInt
+                },
+                padding:{
+                    type: GraphQLInt
+                },
+                margin:{
+                    type: GraphQLInt
+                },
+                lastUpdate: {
+                    type: GraphQLDate
+                }
+                    },
                 resolve: function (root, params) {
                     const logoDetails = LogoModel.findById(params.id).exec()
                     if (!logoDetails) {
