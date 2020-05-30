@@ -3,240 +3,224 @@ var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLList = require('graphql').GraphQLList;
 var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLNonNull = require('graphql').GraphQLNonNull;
+var GraphQLInputObjectType = require('graphql').GraphQLInputObjectType;
 var GraphQLID = require('graphql').GraphQLID;
 var GraphQLString = require('graphql').GraphQLString;
 var GraphQLInt = require('graphql').GraphQLInt;
 var GraphQLDate = require('graphql-date');
-var LogoModel = require('../models/Logo');
-var TextModel = require('../models/Text');
-var ImageModel = require('../models/Image');
+let LogoModel = require('../models/logoModel');
 
-var logoType = new GraphQLObjectType({
-    name: 'logo',
-    fields: function () {
-        return {
-            _id: {
-                type: GraphQLString
-            },
-            texts: {
-                type: GraphQLList(TextType)
-            },
-            images: {
-                type: GraphQLList(ImageType)
-            },
-            // color: {
-            //     type: GraphQLString
-            // },
-            // fontSize: {
-            //     type: GraphQLInt
-            // },
-            backgroundColor:{
-                type: GraphQLString
-            },
-            borderColor:{
-                type: GraphQLString
-            },
-            borderRadius:{
-                type: GraphQLInt
-            },
-            borderThickness:{
-                type: GraphQLInt
-            },
-            padding:{
-                type: GraphQLInt
-            },
-            margin:{
-                type: GraphQLInt
-            },
-            lastUpdate: {
-                type: GraphQLDate
-            }
-        }
-    }
-});
 
-var TextType = new GraphQLObjectType({
-    name: 'text',
-    fields: function(){
-        return{
-            _id: {
-                type: GraphQLString
-            },
-            text: {
-                type: GraphQLString
-            },
-            color: {
-                type: GraphQLString
-            },
-            corX: {
-                type: GraphQLInt
-            },
-            corY: {
-                type: GraphQLInt
-            },
-            lastUpdate: {
-                type: GraphQLInt
-            }
-        }
-    }
-});
+//SECTION: TextBox type and input
 
-var ImageType = new GraphQLObjectType({
-    name: 'image',
-    fields: function(){
-        return{
-            _id: {
-                type: GraphQLString
-            },
-            URL: {
-                type: GraphQLString
-            },
-            sizeX: {
-                type: GraphQLInt
-            },
-            sizeY: {
-                type: GraphQLInt
-            },
-            corX: {
-                type: GraphQLInt
-            },
-            corY: {
-                type: GraphQLInt
-            },
-            lastUpdate: {
-                type: GraphQLInt
-            }
-        }
-    }
-});
-
-var queryType = new GraphQLObjectType({
-    name: 'Query',
-    fields: function () {
-        return {
-            logos: {
-                type: new GraphQLList(logoType),
-                resolve: function () {
-                    const logos = LogoModel.find().exec()
-                    if (!logos) {
-                        throw new Error('Error')
-                    }
-                    return logos
-                }
-            },
-            logo: {
-                type: logoType,
-                args: {
-                    id: {
-                        name: '_id',
-                        type: GraphQLString
-                    },
-                texts: {
-                    type: new GraphQLList(TextType),
-                    resolve: function (){
-                        const texts = TextModel.find().exec()
-                        if (!texts){
-                            return null
-                        }
-                        return texts
-                    }
+var TextboxType = new GraphQLObjectType({
+    name: "TextBox",
+        fields: function () {
+            return {
+                name : {
+                    type : GraphQLString
                 },
                 text: {
-                    type: TextType,
-                    args: {
-                        id: {
-                            name: '_id',
-                            type: GraphQLString
-                        },
-                    color: {
-                        type: GraphQLString
-                    },
-                    fontSize: {
-                        type: GraphQLString
-                    },
-                    corX: {
-                        type: GraphQLInt
-                    },
-                    corY: {
-                        type: GraphQLInt
-                    },
-                    lastUpdate: {
-                        type: GraphQLInt
-                    }
-
-                    }
+                    type: GraphQLString,
                 },
-                images: {
-                    type: new GraphQLList(ImageType),
-                    resolve: function (){
-                        const images = ImageModel.find().exec()
-                        if (!images){
-                            return null
-                        }
-                        return images
-                    }
+                color: {
+                    type: GraphQLString,
                 },
-                image: {
-                    type: ImageType,
-                    args: {
-                        id: {
-                            name: '_id',
-                            type: GraphQLString
-                        },
-                    URL: {
-                        type: GraphQLString
-                    },
-                    sizeX: {
-                        type: GraphQLInt
-                    },
-                    sizeY: {
-                        type: GraphQLInt
-                    },
-                    corX: {
-                        type: GraphQLInt
-                    },
-                    corY: {
-                        type: GraphQLInt
-                    },
-                    lastUpdate: {
-                        type: GraphQLInt
-                    }
-                    }
-
+                fontSize: {
+                    type: GraphQLString,
                 },
-                backgroundColor:{
-                    type: GraphQLString
+                background : {
+                    type : GraphQLString
                 },
-                borderColor:{
-                    type: GraphQLString
+                border : {
+                    type : GraphQLString
                 },
-                borderRadius:{
-                    type: GraphQLInt
+                x: {
+                    type: GraphQLInt,
                 },
-                borderThickness:{
-                    type: GraphQLInt
+                y: {
+                    type: GraphQLInt,
                 },
-                padding:{
-                    type: GraphQLInt
-                },
-                margin:{
-                    type: GraphQLInt
-                },
-                lastUpdate: {
-                    type: GraphQLDate
-                }
-                    },
-                resolve: function (root, params) {
-                    const logoDetails = LogoModel.findById(params.id).exec()
-                    if (!logoDetails) {
-                        throw new Error('Error')
-                    }
-                    return logoDetails
-                }
-            }
-        }
-    }
+        };
+     },
 });
+
+var TextboxInput = new GraphQLInputObjectType({
+    name: "TextBoxInput",
+    fields: function () {
+        return {
+            name : {
+                type : GraphQLString
+            },
+            text: {
+                type: GraphQLString,
+            },
+            color: {
+                type: GraphQLString,
+            },
+            fontSize: {
+                type: GraphQLString,
+            },
+            background : {
+                type : GraphQLString
+            },
+            border : {
+                type : GraphQLString
+            },
+            corX: {
+                type: GraphQLInt,
+            },
+            corY: {
+                type: GraphQLInt,
+            },
+        };
+        },
+});
+
+
+// SECTION: Image type and input
+
+var logoImageType = new GraphQLObjectType({
+    name: "logoImage",
+    fields: function () {
+        return {
+            name: {
+                type: GraphQLString,
+            },
+            url: {
+                type: GraphQLString,
+            },
+            width : {
+                type : GraphQLInt
+            },
+            height : {
+                type : GraphQLInt
+            },
+            corX: {
+                type: GraphQLInt,
+            },
+            corY: {
+                type: GraphQLInt,
+            },
+        };
+    },
+});
+
+var ImageTypeInput = new GraphQLInputObjectType({
+    name: "logoImageInput",
+    fields: function () {
+        return {
+            name: {
+                type: GraphQLString,
+            },
+            url: {
+                type: GraphQLString,
+            },
+            width : {
+                type : GraphQLInt
+            },
+            height : {
+                type : GraphQLInt
+            },
+            corX: {
+                type: GraphQLInt,
+            },
+            corY: {
+                type: GraphQLInt,
+            },
+        };
+    },
+});
+
+// SECTION: logoCanvas type
+
+var logoType = new GraphQLObjectType({
+    name: "logo",
+    fields: function () {
+        return {
+            _id: {
+            type: GraphQLString,
+            },
+            backgroundColor: {
+                type: GraphQLString,
+            },
+            borderColor: {
+                type: GraphQLString,
+            },
+            borderRadius: {
+                type: GraphQLInt,
+            },
+            borderWidth: {
+                type: GraphQLInt,
+            },
+            margin: {
+                type: GraphQLInt,
+            },
+            height: {
+                type: GraphQLInt,
+            },
+            width: {
+                type: GraphQLInt,
+            },
+            border : {
+                type : GraphQLString
+            },
+            position : {
+                type : GraphQLString
+            },
+            textBoxFontColor : {
+                type: GraphQLString
+            },
+            textBoxFontSize : {
+                type : GraphQLInt
+            },
+            textBoxList: {
+                type: GraphQLList(TextboxType),
+            },
+            imageList: {
+                type: GraphQLList(logoImageType),
+            },
+            lastUpdate: {
+                type: GraphQLDate,
+            },
+      };
+    },
+  });
+
+
+  var queryType = new GraphQLObjectType({
+    name: "Query",
+    fields: function () {
+      return {
+        logos: {
+          type: new GraphQLList(logoType),
+          resolve: function () {
+            const logos = LogoModel.find().exec();
+            if (!logos) {
+              throw new Error("Error");
+            }
+            return logos;
+          },
+        },
+        logo: {
+          type: logoType,
+          args: {
+            id: {
+              name: "_id",
+              type: GraphQLString,
+            },
+          },
+          resolve: function (root, params) {
+            const logoDetails = LogoModel.findById(params.id).exec();
+            if (!logoDetails) {
+              throw new Error("Error");
+            }
+            return logoDetails;
+          },
+        },
+      };
+    },
+  });
 
 var mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -244,102 +228,144 @@ var mutation = new GraphQLObjectType({
         return {
             addLogo: {
                 type: logoType,
-                args: {
-                    text: {
-                        type: new GraphQLNonNull(GraphQLString)
+                    args: {
+                  
+                        backgroundColor: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        borderColor: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        borderRadius: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        borderWidth: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        margin: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        height: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        width: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        border : {
+                            type : new GraphQLNonNull(GraphQLString)
+                        },
+                        position : {
+                            type : new GraphQLNonNull(GraphQLString)
+                        },
+                        textBoxFontColor : {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        textBoxFontSize : {
+                            type : new GraphQLNonNull(GraphQLInt)
+                        },
+                        textBoxList : {
+                            type: new GraphQLNonNull(GraphQLList(TextboxInput)),
+                        },
+                        imageList: {
+                            type: new GraphQLNonNull(GraphQLList(ImageTypeInput)),
+                        },
                     },
-                    color: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    fontSize: {
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    backgroundColor:{
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    borderColor:{
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    borderRadius:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    borderThickness:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    padding:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    margin:{
-                        type: new GraphQLNonNull(GraphQLInt)
+                    resolve: function (root, params) {
+                    const logoCanvasModel = new LogoModel(params);
+                    const newLogoCanvas = logoCanvasModel.save();
+                    if (!newLogoCanvas) {
+                        throw new Error("Error");
                     }
-                },
-                resolve: function (root, params) {
-                    const logoModel = new LogoModel(params);
-                    const newLogo = logoModel.save();
-                    if (!newLogo) {
-                        throw new Error('Error');
-                    }
-                    return newLogo
-                }
+                        return newLogoCanvas;
+                    },
             },
             updateLogo: {
                 type: logoType,
-                args: {
-                    id: {
-                        name: 'id',
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    text: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    color: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    fontSize: {
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    backgroundColor:{
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    borderColor:{
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    borderRadius:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    borderThickness:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    padding:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    },
-                    margin:{
-                        type: new GraphQLNonNull(GraphQLInt)
-                    }
+                    args: {
+                        id: {
+                            name: "id",
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        backgroundColor: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        borderColor: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        borderRadius: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        borderWidth: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        margin: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        height: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        width: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        border : {
+                            type : new GraphQLNonNull(GraphQLString)
+                        },
+                        position : {
+                            type : new GraphQLNonNull(GraphQLString)
+                        },
+                        textBoxFontColor : {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
+                        textBoxFontSize : {
+                            type : new GraphQLNonNull(GraphQLInt)
+                        },
+                        textBoxList : {
+                            type: new GraphQLNonNull(GraphQLList(TextboxInput)),
+                        },
+                        imageList: {
+                            type: new GraphQLNonNull(GraphQLList(ImageTypeInput)),
+                        },
                 },
                 resolve(root, params) {
-                    return LogoModel.findByIdAndUpdate(params.id, { text: params.text, color: params.color, fontSize: params.fontSize, backgroundColor: params.backgroundColor,
-                        borderColor:params.borderColor,borderRadius: params.borderRadius, borderThickness: params.borderThickness, padding: params.padding
-                        , margin: params.margin, lastUpdate: new Date() }, function (err) {
-                        if (err) return next(err);
-                    });
-                }
+                        return LogoModel.findByIdAndUpdate(
+                            params.id,
+                            {
+                            backgroundColor: params.backgroundColor,
+                            borderColor: params.borderColor,
+                            borderRadius: params.borderRadius,
+                            borderWidth: params.borderWidth,
+                            margin: params.margin,
+                            height: params.height,
+                            width: params.width,
+                            border : params.border,
+                            position : params.absolute,
+                            textBoxFontColor : params.textBoxFontColor,
+                            textBoxFontSize : params.textBoxFontSize,
+                            textBoxList: params.textBoxList,
+                            imageList: params.imageList,
+                            lastUpdate: new Date(),
+                            },
+                            function (err) {
+                            if (err) return next(err);
+                        }
+                    ); 
+                },
             },
             removeLogo: {
                 type: logoType,
-                args: {
-                    id: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    }
+                    args: {
+                        id: {
+                        type: new GraphQLNonNull(GraphQLString),
+                        },
+                    },
+                    resolve(root, params) {
+                        const remLogo = LogoModel.findByIdAndRemove(params.id).exec();
+                        if (!remLogo) {
+                            throw new Error("Error");
+                        }
+                        return remLogo;
                 },
-                resolve(root, params) {
-                    const remLogo = LogoModel.findByIdAndRemove(params.id).exec();
-                    if (!remLogo) {
-                        throw new Error('Error')
-                    }
-                    return remLogo;
-                }
-            }
+            },
         }
     }
 });
