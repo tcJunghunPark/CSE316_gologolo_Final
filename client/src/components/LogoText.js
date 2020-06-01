@@ -28,6 +28,10 @@ class LogoTextBox extends Component {
         }
     }
 
+    handleTextDrag = (newText, newCoordi) => {
+        this.props.handleTextBoxDragCallback(newText, newCoordi)
+    }
+
     handleLogoTextChange = (event) =>{
         const newStyle = {
             name : this.state.style.name,
@@ -47,9 +51,7 @@ class LogoTextBox extends Component {
         }   
     }
 
-    handleTextDrag = (newText, newCoordinates) => {
-        this.props.handleTextBoxDragCallback(newText, newCoordinates)
-    }
+    
 
     render() {
         console.log("textbox render");
@@ -79,7 +81,7 @@ class LogoTextBox extends Component {
                         y: d.y 
                     }) 
                 }}
-                dragGrid={[20, 20]}
+                dragGrid={[15, 15]}
                 disableDragging = {disableDraggingViewScreen}
             >
                 <ContentEditable
