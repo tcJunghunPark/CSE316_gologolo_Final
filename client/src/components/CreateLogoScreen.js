@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import GologoloNavBar from './GologoloNavBar.js';
-import LogoTextBox from './LogoTextBox.js';
+import LogoText from './LogoTextBox.js';
 import LogoImage from './LogoImage.js';
 import * as html2Canvas from 'html2canvas';
 
