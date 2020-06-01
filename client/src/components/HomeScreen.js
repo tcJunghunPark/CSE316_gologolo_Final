@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import GologoloNavBar from './GologoloNavBar.js';
+import { Grid, Button } from '@material-ui/core';
 
 const GET_LOGOS = gql`
   {
     logos {
       _id
-      text
+      textBoxList{
+          text
+      }
       lastUpdate
     }
   }
@@ -29,10 +33,14 @@ class HomeScreen extends Component {
 
                     return (
                        <div>
-                        <div className="container row">
+                           <div id = "homeNavBar">
+                           
+                           </div>
+                        <Grid container xs = {12}>  
+                        <div className="container_home">
                             <div className="col s4 ">
-                                <div>
-                                <h3>Recent Work</h3>
+                                <div id = "workList">
+                                <div id = "recentwork"><h3>Recent Work</h3></div>
                                 </div>
                                 {data.logos.sort(function(logo1, logo2){
                                     if(logo1.lastUpdate == logo2.lastUpdate){
@@ -49,6 +57,7 @@ class HomeScreen extends Component {
                                     </div>
                                 ))}
                             </div>
+                            </div>
                             <div className="col s8">
                                 <div id="home_banner_container">
                                     @todo<br />
@@ -58,7 +67,8 @@ class HomeScreen extends Component {
                                    <button className = {createClass}> <Link id="add_logo_button" to="/create">Add Logo</Link></button>
                                 </div>
                             </div>
-                        </div>
+                        
+                        </Grid>
                         </div>
                     );
                 }

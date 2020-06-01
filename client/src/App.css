@@ -17,6 +17,15 @@ body {
   background-color: var(--swatch-foundation);
   font-family: 'Lexend Exa';
 }
+#workList {
+  color: white;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  height: 300px;
+}
+
 
 #home_banner_container {
   background-image: linear-gradient(to bottom,         
