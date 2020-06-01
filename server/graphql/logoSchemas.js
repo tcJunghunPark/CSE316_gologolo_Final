@@ -35,10 +35,10 @@ var TextboxType = new GraphQLObjectType({
                 border : {
                     type : GraphQLString
                 },
-                x: {
+                corX: {
                     type: GraphQLInt,
                 },
-                y: {
+                corY: {
                     type: GraphQLInt,
                 },
         };
