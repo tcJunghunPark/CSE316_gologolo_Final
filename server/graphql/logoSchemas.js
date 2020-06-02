@@ -153,6 +153,9 @@ var logoType = new GraphQLObjectType({
             borderWidth: {
                 type: GraphQLInt,
             },
+            padding:{
+                type: GraphQLInt,
+            },
             margin: {
                 type: GraphQLInt,
             },
@@ -241,6 +244,9 @@ var mutation = new GraphQLObjectType({
                         },
                         borderWidth: {
                             type: new GraphQLNonNull(GraphQLInt),
+                        }, 
+                        padding:{
+                            type: new GraphQLNonNull(GraphQLInt),
                         },
                         margin: {
                             type: new GraphQLNonNull(GraphQLInt),
@@ -296,6 +302,9 @@ var mutation = new GraphQLObjectType({
                             type: new GraphQLNonNull(GraphQLInt),
                         },
                         borderWidth: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                        },
+                        padding:{
                             type: new GraphQLNonNull(GraphQLInt),
                         },
                         margin: {

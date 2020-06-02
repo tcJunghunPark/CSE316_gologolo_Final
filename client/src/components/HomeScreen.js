@@ -32,10 +32,11 @@ class HomeScreen extends Component {
                     //console.log("last update", data.logos);
 
                     return (
-                       <div>
+                    <div>
                            <div id = "homeNavBar">
                            
                            </div>
+                           <GologoloNavBar currentScreen = "Home"/>
                         <Grid container xs = {12}>  
                         <div className="container_home">
                             <div className="col s4 ">

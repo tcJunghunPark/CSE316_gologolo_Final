@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import GologoloNavBar from './GologoloNavBar.js';
 import LogoText from './LogoText.js';
 import LogoImage from './LogoImage.js';
+import LogoCanvas from './LogoCanvas.js';
 import * as html2Canvas from 'html2canvas';
 
 
@@ -14,6 +15,7 @@ const ADD_LOGO = gql`
     $borderColor: String!
     $borderRadius: Int!
     $borderWidth: Int!
+    $padding: Int!,
     $margin: Int!,
     $height: Int!,
     $width: Int!,
@@ -21,14 +23,15 @@ const ADD_LOGO = gql`
     $position : String!,
     $textBoxFontColor : String!,
     $textBoxFontSize : Int!,
-    $textBoxList : [logoTextBoxInput]!,
-    $imageList : [logoImageInput]!
+    $textBoxList : [TextBoxInput]!,
+    $imageList : [ImageTypeInput]!
   ) {
     addLogo(
       backgroundColor: $backgroundColor,
       borderColor: $borderColor,
       borderRadius: $borderRadius,
       borderWidth: $borderWidth,
+      padding: $padding,
       margin: $margin,
       height : $height,
       width : $width,
@@ -45,22 +48,56 @@ const ADD_LOGO = gql`
 `;
 
 class CreateLogoScreen extends Component {
-    state = {
-        text: "Text",
-        color: "#00ff00",
-        fontSize: 30 + "pt",
-        backgroundColor: "#0000ff",
+    constructor(props){
+        super(props);
+        this.state = {
+            backgroundColor: "#0000ff", 
+            borderColor: "#1b1867",
+            borderRadius: 20 + "%",
+            borderWidth: 10,
+            border: "solid", 
+            margin: 10 + "px",
 
-        borderRadius: 30 + "%",
-        border: 10 + "px solid " + "#1b1867",
-        padding: 10 + "px",
-        margin: 10 + "px",
-        borderWidth: 10,
-        borderColor: "#1b1867",
-        width: '600px',
-        float: 'left'
+            height: 750,
+            width: 800,
+            position : "absolute", 
 
+            textBoxFontColor : "#000000",
+            textBoxFontSize : 12,
+
+            currentImageLink : "", 
+            textBoxCounter : 1,
+            imageCounter : 1,
+            bugCounter : 0,
+            imageErrorAlert : false, 
+
+            textBoxList : [
+                {
+                    name : "text1",
+                    text: "text1",
+                    color: "#00ff00",
+                    fontSize: "30px",
+                    background : "transparent",
+                    border : "none",
+                    x: 30,
+                    y: 30
+                },
+            ],
+            imageList : [
+                {
+                    name : "image1",
+                    source : "https://georgetownvoice.com/wp-content/uploads/2019/11/mcr.png",
+                    width : 300,
+                    height : 300,
+                    x : 400,
+                    y : 400,
+                },
+            ],
+
+
+        };
     }
+    
     textChange = (e) => {
         console.log("text change");
         console.log(e.target.value);
@@ -110,59 +147,58 @@ class CreateLogoScreen extends Component {
 
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
+        const style = {
+            borderColor: this.state.borderColor,
+            backgroundColor: this.state.backgroundColor, 
+            borderRadius: parseInt(this.state.borderRadius) + "px",
+            borderWidth: parseInt(this.state.borderWidth) + "px",
+            borderStyle: "solid",
+            margin: parseInt(this.state.margin) + "px",
+            height: parseInt(this.state.height) + "px",
+            width: parseInt(this.state.width) + "px",
+            position : "absolute",
+            textBoxFontColor : this.state.textBoxFontColor,
+            textBoxFontSize : parseInt(this.state.textBoxFontSize) + "px"
+
+        }
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
                     <div className="container">
                         <div className="panel panel-default">
-                            <div className="panel-heading">
-                                <button><h4><Link to="/">Home</Link></h4></button>
-                                <h3 className="panel-title">
-                                    Create Logo
-                            </h3>
+                            
+                            <GologoloNavBar currentScreen = "Create Logo"/>
+                            <div id = "creatHeading"className="panel-heading">
                             </div>
                             <div className="panel-body">
                                 <form onSubmit={e => {
                                     e.preventDefault();
                                     addLogo({
                                         variables: {
-                                            text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
-                                            backgroundColor: backgroundColor.value, borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value),
-                                            borderWidth: parseInt(borderWidth.value), padding: parseInt(padding.value), margin: parseInt(margin.value)
-                                        }
+                                            backgroundColor : this.state.backgroundColor,
+                                            borderColor : this.state.borderColor,
+                                            borderRadius : parseInt(this.state.borderRadius),
+                                            borderWidth : parseInt(this.state.borderWidth),
+                                            padding : parseInt(this.state.padding),
+                                            margin : parseInt(this.state.margin),
+                                            height : parseInt(this.state.height),
+                                            border : this.state.border,
+                                            width : parseInt(this.state.width),
+                                            position : this.state.position,
+                                            textBoxFontColor : this.state.textBoxFontColor,
+                                            textBoxFontSize : parseInt(this.state.textBoxFontSize),
+                                            textBoxList : this.state.textBoxList,
+                                            imageList : this.state.imageList
+                                        },
                                     });
-                                    text.value = "";
-                                    color.value = "";
-                                    fontSize.value = "";
-                                    backgroundColor.value = "";
-                                    borderColor.value = "";
-                                    borderRadius.value = "";
-                                    borderWidth.value = "";
-                                    padding.value = "";
-                                    margin.value = "";
+                                    
 
 
-                                }}>
-                                    <div stylestyle={{ width: '1200px' }}>
-                                        <div className="col s4 panel-body" style={{ left: "0", width: '300px', float: 'left' }}>
-                                            <div className="form-group">
-                                                <label htmlFor="text">Text:</label>
-                                                <input type="text" className="form-control" name="text" ref={node => {
-                                                    text = node;
-                                                }} placeholder="Text" defaultValue={this.state.text} onChange={this.textChange} />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="color">Color:</label>
-                                                <input type="color" className="form-control" name="color" ref={node => {
-                                                    color = node;
-                                                }} placeholder="Color" defaultValue={this.state.color} onChange={this.colorChange} />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="fontSize">Font Size:</label>
-                                                <input type="number" className="form-control" name="fontSize" ref={node => {
-                                                    fontSize = node;
-                                                }} min='2' max='144' placeholder="Font Size" defaultValue={30} onChange={this.fontSizeChange} />
-                                            </div>
+                                }} style = {{marginLeft : "-200px"}}>
+                                    <div stylestyle={{ width: '1200px', borderStyle: "solid", borderColor: "black" }}>
+                                        <div id ="left-panel"className="col s4 panel-body" style={{ left: "0", width: '200px', 
+                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                             <div className="form-group">
                                                 <label htmlFor="backgroundColor">Background Color:</label>
                                                 <input type="color" className="form-control" name="backgroundColor" ref={node => {
@@ -182,16 +218,10 @@ class CreateLogoScreen extends Component {
                                                 }} min='0' max='50' placeholder="Border Radius" defaultValue={30} onChange={this.borderRadiusChange} />
                                             </div>
                                             <div className="form-group">
-                                                <label htmlFor="borderWidth">Border Thickness:</label>
+                                                <label htmlFor="borderWidth">Border Width:</label>
                                                 <input type="number" className="form-control" name="borderWidth" ref={node => {
                                                     borderWidth = node;
-                                                }} min='0' max='144' placeholder="Border Thickness" defaultValue={10} onChange={this.borderWidthChange} />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="padding">Padding:</label>
-                                                <input type="number" className="form-control" name="padding" ref={node => {
-                                                    padding = node;
-                                                }} min='0' max='144' placeholder="Padding" defaultValue={10} onChange={this.paddingChange} />
+                                                }} min='0' max='144' placeholder="Border Width" defaultValue={10} onChange={this.borderWidthChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="margin">Margin:</label>
@@ -206,11 +236,39 @@ class CreateLogoScreen extends Component {
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
                             </div>
+                            <div id = "canvaspane" className='col s6' style = {{display : "flex"}}>
+                        <LogoCanvas 
+                                styles = {style}
+                                textBoxList = {this.state.textBoxList}
+                                imageList = {this.state.imageList}
+                                imageErrorAlert = {this.state.imageErrorAlert}
+                                currentImageLink = {this.state.currentImageLink}
+                                // downloadImageCallback = {this.downloadImage}
+                                // createTextBoxCallback = {this.createTextBox}
+                                // createImageCallback = {this.createImage}
+                                // addTextBoxCallback = {this.addTextBox}
+                                // addImageCallback = {this.addImage}
+                                // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
+                                // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
+                                // handleCloseImageCallback = {this.handleCloseImage}
+                                // handleCloseTextBoxCallback = {this.handleCloseTextBox}
+                            />
                         </div>
-                        <div className='col s6'
-                            style={this.state}>
-                            {this.state.text}
+                        <form style = {{marginLeft : "930px"}}>
+                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
+                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                            add text
                         </div>
+                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
+                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                            add image
+                        </div>
+                        </form>
+                        </div>
+                        
+                        
                     </div>
                 )}
             </Mutation>
