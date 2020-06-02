@@ -255,17 +255,49 @@ class CreateLogoScreen extends Component {
                             />
                         </div>
                         <form style = {{marginLeft : "930px"}}>
+                           
                         <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
-                            add text
-                        </div>
-                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
-                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
-                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
-                            add image
+                                             <h3>Create Text Box</h3>
+                            <div className="form-group">
+                                <label htmlFor="margin">Text:</label>
+                                <input type="String" className="form-control" name="Text" ref={node => {
+                                        text = node;
+                                }} placeholder="text" defaultValue={"TEXT"} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="TextColor">Text Color:</label>
+                                <input type="color" className="form-control" name="Color" ref={node => {
+                                        color = node;
+                                }} placeholder="Text Color" defaultValue={"black"}  />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="font-size">Font-Size:</label>
+                                <input type="number" className="form-control" name="fontSize" ref={node => {
+                                    fontSize = node;
+                                }} min='0' max='100' placeholder="FontSize" defaultValue={20} />
+                            </div>
+                            <button type="submit" className="btn btn-success">Create</button>
                         </div>
                         </form>
+
+                        <form style = {{marginLeft : "930px"}}>
+                           
+                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
+                                        marginTop: "16%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                                             <h3>Create Image Box</h3>
+                            <div className="form-group">
+                                <label htmlFor="margin">Image URL:</label>
+                                <input type="String" className="form-control" name="source"
+                                placeholder="source" defaultValue={"IMG URL"} />
+                            </div>
+                            
+                            <button type="submit" className="btn btn-success">Insert</button>
+                        </div>
+                        </form>
+
                         </div>
                         
                         
