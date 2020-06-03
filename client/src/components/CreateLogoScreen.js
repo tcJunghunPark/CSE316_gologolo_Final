@@ -51,6 +51,12 @@ class CreateLogoScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
+            text: "TEXT",
+            color: "black",
+            fontSize: 20,
+
+            source: "",
+
             backgroundColor: "#0000ff", 
             borderColor: "#1b1867",
             borderRadius: 20 + "%",
@@ -144,9 +150,42 @@ class CreateLogoScreen extends Component {
         console.log("margin Change");
         this.setState({ margin: e.target.value + "px" });
     }
+    createTextBox = (text) => {
+        console.log("create", text)
+        return(
+			<div key = {text.name.length + 3}>
+                <LogoImage style = {text} 
+                           handleCloseImageCallback = {this.handleCloseImage}  
+                           handleImageResizeDragCallback = {this.handleImageResizeDrag}
+                           onClick={(event) => this.handleChangeFocus(event)}
+                />
+			</div>
+		)
+    }
+    addText = () =>{
+        const textCounter = this.state.textBoxCounter + 1;
+        const textName = "text" + textCounter;
+        const newText = {
+            name : textName,
+            text : this.state.text,
+            color : this.state.color,
+            fontSize : parseInt(this.state.fontSize) + "pt",
+            background: "transparent",
+            border : "none",
+            x : 300,
+            y : 300
+        }
+        const newTextList = this.state.textBoxList;
+        newTextList.push(newText)
+        this.setState({
+            textBoxList: newTextList,
+            textBoxCounter: textCounter
+        });
+        this.createTextBox(newText);
+    }
 
     render() {
-        let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
+        
         const style = {
             borderColor: this.state.borderColor,
             backgroundColor: this.state.backgroundColor, 
@@ -201,33 +240,28 @@ class CreateLogoScreen extends Component {
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                             <div className="form-group">
                                                 <label htmlFor="backgroundColor">Background Color:</label>
-                                                <input type="color" className="form-control" name="backgroundColor" ref={node => {
-                                                    backgroundColor = node;
-                                                }} placeholder="Background Color" defaultValue={this.state.backgroundColor} onChange={this.backgroundColorChange} />
+                                                <input type="color" className="form-control" name="backgroundColor" 
+                                                 placeholder="Background Color" defaultValue={this.state.backgroundColor} onChange={this.backgroundColorChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="borderColor">Border Color:</label>
-                                                <input type="color" className="form-control" name="borderColor" ref={node => {
-                                                    borderColor = node;
-                                                }} placeholder="Border Color" defaultValue={this.state.borderColor} onChange={this.borderColorChange} />
+                                                <input type="color" className="form-control" name="borderColor" 
+                                                 placeholder="Border Color" defaultValue={this.state.borderColor} onChange={this.borderColorChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="borderRadius">Border Radius:</label>
-                                                <input type="number" className="form-control" name="borderRadius" ref={node => {
-                                                    borderRadius = node;
-                                                }} min='0' max='50' placeholder="Border Radius" defaultValue={30} onChange={this.borderRadiusChange} />
+                                                <input type="number" className="form-control" name="borderRadius" 
+                                                 min='0' max='50' placeholder="Border Radius" defaultValue={30} onChange={this.borderRadiusChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="borderWidth">Border Width:</label>
-                                                <input type="number" className="form-control" name="borderWidth" ref={node => {
-                                                    borderWidth = node;
-                                                }} min='0' max='144' placeholder="Border Width" defaultValue={10} onChange={this.borderWidthChange} />
+                                                <input type="number" className="form-control" name="borderWidth" 
+                                                min='0' max='144' placeholder="Border Width" defaultValue={10} onChange={this.borderWidthChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="margin">Margin:</label>
-                                                <input type="number" className="form-control" name="margin" ref={node => {
-                                                    margin = node;
-                                                }} min='0' max='100' placeholder="Margin" defaultValue={10} onChange={this.marginChange} />
+                                                <input type="number" className="form-control" name="margin" 
+                                                 min='0' max='100' placeholder="Margin" defaultValue={10} onChange={this.marginChange} />
                                             </div>
                                             <button type="submit" className="btn btn-success">Submit</button>
                                         </div>
@@ -254,37 +288,36 @@ class CreateLogoScreen extends Component {
                                 // handleCloseTextBoxCallback = {this.handleCloseTextBox}
                             />
                         </div>
-                        <form style = {{marginLeft : "930px"}}>
+                        <form onSubmit={(e) => {
+                            
+                        }} style = {{marginLeft : "930px"}}>
                            
-                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
+                        <div id = "rightone" className = 'righttside' style={{ left: "700", width: '400px', 
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                              <h3>Create Text Box</h3>
                             <div className="form-group">
                                 <label htmlFor="margin">Text:</label>
-                                <input type="String" className="form-control" name="Text" ref={node => {
-                                        text = node;
-                                }} placeholder="text" defaultValue={"TEXT"} />
+                                <input type="String" className="form-control" name="Text" 
+                                 placeholder="text" defaultValue={"TEXT"} onChange={this.textChange}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="TextColor">Text Color:</label>
-                                <input type="color" className="form-control" name="Color" ref={node => {
-                                        color = node;
-                                }} placeholder="Text Color" defaultValue={"black"}  />
+                                <input type="color" className="form-control" name="Color"
+                                 placeholder="Text Color" defaultValue={"black"}  onChange={this.colorChange}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="font-size">Font-Size:</label>
-                                <input type="number" className="form-control" name="fontSize" ref={node => {
-                                    fontSize = node;
-                                }} min='0' max='100' placeholder="FontSize" defaultValue={20} />
+                                <input type="number" className="form-control" name="fontSize"
+                                 min='0' max='100' placeholder="FontSize" defaultValue={20} onChange={this.fontSizeChange}/>
                             </div>
-                            <button type="submit" className="btn btn-success">Create</button>
+                            <button type="button" className="btn btn-success" onClick = {this.addText}>Create</button>
                         </div>
                         </form>
 
                         <form style = {{marginLeft : "930px"}}>
                            
-                        <div id = "rightone"clssName = 'righttside' style={{ left: "700", width: '400px', 
+                        <div id = "rightone" className = 'righttside' style={{ left: "700", width: '400px', 
                                         marginTop: "16%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                              <h3>Create Image Box</h3>
