@@ -71,7 +71,7 @@ class CreateLogoScreen extends Component {
             textBoxFontColor : "#000000",
             textBoxFontSize : 12,
 
-            currentImageLink : "", 
+            imageURL : "", 
             textBoxCounter : 1,
             imageCounter : 1,
             bugCounter : 0,
@@ -164,11 +164,11 @@ class CreateLogoScreen extends Component {
         console.log("margin Change");
         this.setState({ margin: e.target.value + "px" });
     }
-    createTextBox = (textBoxListElement) => {
-        console.log("create", textBoxListElement)
+    createTextBox = (e) => {
+        console.log("create", e)
         return(
-			<div key = {textBoxListElement['fontSize'] + textBoxListElement['color']}>
-                <LogoText style = {textBoxListElement} 
+			<div key = {e['fontSize'] + e['color']}>
+                <LogoText style = {e} 
                              handleCloseTextBoxCallback = {this.handleCloseTextBox} 
                              handleLogoTextBoxTextChangeCallback = {this.handleLogoTextBoxTextChange} 
                              handleTextBoxDragCallback = {this.handleTextBoxDrag} 
@@ -176,7 +176,21 @@ class CreateLogoScreen extends Component {
 			</div>
 		)
     }
+    createImage = (e) =>{
+        console.log("image ", e)
+		return(
+			<div key = {e.name.length + 3}>
+                <LogoImage style = {e} 
+                           handleCloseImageCallback = {this.handleCloseImage}  
+                           handleImageResizeDragCallback = {this.handleImageResizeDrag}
+                           onClick={(event) => this.handleChangeFocus(event)}
+                />
+			</div>
+		)
+		
+	}
     addText = () =>{
+        console.log("add Text to list")
         const textCounter = this.state.textBoxCounter + 1;
         const textName = "text" + textCounter;
         const newText = {
@@ -197,6 +211,34 @@ class CreateLogoScreen extends Component {
         });
         
     }
+    addImage = () => {
+        console.log("add Image")
+        const reg =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+        if(reg.test(this.state.imageURL)){
+			const imageCounter = this.state.imageCounter+1;
+			const newImageList = 'image' + imageCounter + this.state.imageURL;
+			const newImage = {
+				name : newImageList, 
+				source : this.state.imageURL,
+				width : 400,
+				height : 500, 
+				x : 400, 
+				y : 100
+            }
+            const updatedImageList = this.state.imageList
+            updatedImageList.push(newImage)
+			this.setState({
+				imageList : updatedImageList,
+				currentImageLink : "",
+				imageCounter : imageCounter
+			});
+		} else {
+            console.log("Wrong URL received")
+			this.setState({imageErrorAlert : true, currentImageLink : ""})
+		}
+
+    }
+
 
     render() {
         
@@ -290,10 +332,10 @@ class CreateLogoScreen extends Component {
                                 textBoxList = {this.state.textBoxList}
                                 imageList = {this.state.imageList}
                                 imageErrorAlert = {this.state.imageErrorAlert}
-                                currentImageLink = {this.state.currentImageLink}
+                                currentImageLink = {this.state.imageURL}
                                 // downloadImageCallback = {this.downloadImage}
                                 createTextCallback = {this.createTextBox}
-                                // createImageCallback = {this.createImage}
+                                createImageCallback = {this.createImage}
                                  addTextBoxCallback = {this.addText}
                                 // addImageCallback = {this.addImage}
                                 // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
@@ -341,7 +383,7 @@ class CreateLogoScreen extends Component {
                                 placeholder="source" defaultValue={"IMG URL"} />
                             </div>
                             
-                            <button type="submit" className="btn btn-success">Insert</button>
+                            <button type="submit" className="btn btn-success" onClick = {this.addImage}>Insert</button>
                         </div>
                         </form>
 

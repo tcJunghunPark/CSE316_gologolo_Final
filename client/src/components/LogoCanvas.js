@@ -24,8 +24,8 @@ export default class LogoCanvas extends React.PureComponent {
                 
                 
                 <div id = "logoArea" style = {this.props.styles} className = "Boxes">
-                    {_.map(this.props.textBoxList, textBoxElement => this.props.createTextCallback(textBoxElement))}
-                    {/* {_.map(this.props.imageList, imageListElement => this.props.createImageCallback(imageListElement))} */}
+                    {_.map(this.props.textBoxList, e => this.props.createTextCallback(e))}
+                    {_.map(this.props.imageList, e => this.props.createImageCallback(e))}
                 </div>
             </div>
     ) 
