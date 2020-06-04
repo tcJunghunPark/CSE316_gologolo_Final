@@ -175,35 +175,60 @@ class CreateLogoScreen extends Component {
 		})
     }
 
-    handleLogoTextBoxTextChange = (textBoxToUpdate, newStyle) => {
-        const newTexBoxtList = this.state.textBoxList;
+    textBoxChange = (textBoxToUpdate, newText) => {
+        const newTextList = this.state.textBoxList;
         const updatedBugCounter = this.state.bugCounter + 1;
-        for(var i = 0; i < newTexBoxtList.length; i++){
-            if(newTexBoxtList[i].name == textBoxToUpdate){
-                newTexBoxtList[i] = newStyle;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == textBoxToUpdate){
+                newTextList[i] = newText;
                 break;
             }
         }
         this.setState({
-            textBoxList : newTexBoxtList,
+            textBoxList : newTextList,
             bugCounter : updatedBugCounter
         })
     }
 
-    handleTextBoxDrag = (textBoxToUpdate, newStyle) => {
-        const newTextBoxList = this.state.textBoxList;
+    textBoxDrag = (textBoxToUpdate, newCoordi) => {
+        const newTextList = this.state.textBoxList;
         const updatedBugCounter = this.state.bugCounter + 1;
-        for(var i = 0; i < newTextBoxList.length; i++){
-            if(newTextBoxList[i].name == textBoxToUpdate){
-                newTextBoxList[i] = newStyle;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == textBoxToUpdate){
+                newTextList[i] = newCoordi;
                 break;
             }
         }
         this.setState({
-            textBoxList : newTextBoxList,
+            textBoxList : newTextList,
             bugCounter : updatedBugCounter
         })
     }
+
+    closeImage = (imageToDelete) => {
+		const newImageList = _.filter(this.state.imageList, imageListElement => imageListElement.name !== imageToDelete)
+        const updatedBugCounter = this.state.bugCounter + 1;
+		this.setState({
+			imageList : newImageList,
+			bugCounter : updatedBugCounter
+		})
+    }
+    
+    imageDrag = (imageToUpdate, newStyle) => {
+        const newImageList = this.state.imageList;
+        const updatedBugCounter = this.state.bugCounter + 1;
+        for(var i = 0; i < newImageList.length; i++){
+            if(newImageList[i].name == imageToUpdate){
+                newImageList[i] = newStyle;
+                break;
+            }
+        }
+        this.setState({
+            imageList : newImageList,
+            bugCounter : updatedBugCounter
+        })
+    }
+
 
     createTextBox = (e) => {
         console.log("create", e)
@@ -211,8 +236,8 @@ class CreateLogoScreen extends Component {
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
                              handleCloseTextBoxCallback = {this.closeText} 
-                             handleLogoTextBoxTextChangeCallback = {this.handleLogoTextBoxTextChange} 
-                             handleTextBoxDragCallback = {this.handleTextBoxDrag} 
+                             handleLogoTextBoxTextChangeCallback = {this.textBoxChange} 
+                             handleTextBoxDragCallback = {this.textBoxDrag} 
                 />
 			</div>
 		)
@@ -222,8 +247,8 @@ class CreateLogoScreen extends Component {
 		return(
 			<div key = {e.name.length + 3}>
                 <LogoImage style = {e} 
-                           handleCloseImageCallback = {this.handleCloseImage}  
-                           handleImageResizeDragCallback = {this.handleImageResizeDrag}
+                           handleCloseImageCallback = {this.closeImage}  
+                           handleImageResizeDragCallback = {this.imageDrag}
                            onClick={(event) => this.handleChangeFocus(event)}
                 />
 			</div>
