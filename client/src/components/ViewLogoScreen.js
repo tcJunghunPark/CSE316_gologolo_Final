@@ -111,11 +111,27 @@ class ViewLogoScreen extends Component {
 
                                 <div style = {{width: '1200px'}}>
                                 <div className="col s4 panel-body" style={{ left: "0", width: '200px', 
-                                        marginTop: "10%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                     <dl className="col s4" >
                                         <dt>Text:</dt>
                                         <dd>{logoTitle}</dd>
+                                        <dt>Background Color:</dt>
+                                        <dd>{data.logo.backgroundColor}</dd>
+                                        <dt>Border Color:</dt>
+                                        <dd>{data.logo.borderColor}</dd>
+                                        <dt>Border Radius:</dt>
+                                        <dd>{data.logo.borderRadius}</dd>
+                                        <dt>Border Width:</dt>
+                                        <dd>{data.logo.borderWidth}</dd>
+                                        <dt>Margin:</dt>
+                                        <dd>{data.logo.margin}</dd>
+                                        <dt>Canvas Width:</dt>
+                                        <dd>{data.logo.width}</dd>
+                                        <dt>Canvas Height:</dt>
+                                        <dd>{data.logo.height}</dd>
+                                        
+
                                         
                                     </dl>
                                     <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
@@ -126,19 +142,22 @@ class ViewLogoScreen extends Component {
                                                         e.preventDefault();
                                                         removeLogo({ variables: { id: data.logo._id } });
                                                     }}>
-                                                    <Link to={{pathname: `/edit/${data.logo._id}`, state: {
-                                                         text: data.logo.text,
-                                                         color: data.logo.color,
-                                                         fontSize: data.logo.fontSize + "pt",
-                                                         backgroundColor: data.logo.backgroundColor,
+                                                    <Link to={{pathname: `/edit/${data.logo._id}`
+                                                    // , state: {
+                                                    //      text: data.logo.text,
+                                                    //      color: data.logo.color,
+                                                    //      fontSize: data.logo.fontSize + "pt",
+                                                    //      backgroundColor: data.logo.backgroundColor,
                                                          
-                                                         borderRadius: data.logo.borderRadius + "%",
-                                                         border: data.logo.borderThickness + "px solid " + data.logo.borderColor,
-                                                         padding: data.logo.padding + "px",
-                                                         margin: data.logo.margin+ "px",
-                                                         borderThickness: data.logo.borderThickness,
-                                                         borderColor: data.logo.borderColor
-                                                    }}} className="btn btn-success">Edit</Link>&nbsp;
+                                                    //      borderRadius: data.logo.borderRadius + "%",
+                                                    //      border: data.logo.borderThickness + "px solid " + data.logo.borderColor,
+                                                    //      padding: data.logo.padding + "px",
+                                                    //      margin: data.logo.margin+ "px",
+                                                    //      borderThickness: data.logo.borderThickness,
+                                                    //      borderColor: data.logo.borderColor
+                                                    // }
+                                                }} 
+                                                    className="btn btn-success">Edit</Link>&nbsp;
                                                 <button type="submit" className="btn btn-danger">Delete</button>
                                                 </form>
                                                 {loading && <p>Loading...</p>}
