@@ -102,7 +102,21 @@ class CreateLogoScreen extends Component {
 
 
         };
+        this.handleBorderWidthChange = this.handleBorderWidthChange.bind(this)
     }
+
+    handleBorderWidthChange = (event) =>{
+        event.preventDefault();
+        var updateBorderWidth = this.state.borderWidth
+        updateBorderWidth = event.target.value
+        if(updateBorderWidth > 50){
+            updateBorderWidth = 50
+        }
+        if(updateBorderWidth < 1) {
+            updateBorderWidth  = 1
+        }
+        this.setState({ borderWidth : updateBorderWidth });
+    };
     
     textChange = (e) => {
         console.log("text change");
@@ -150,14 +164,14 @@ class CreateLogoScreen extends Component {
         console.log("margin Change");
         this.setState({ margin: e.target.value + "px" });
     }
-    createTextBox = (text) => {
-        console.log("create", text)
+    createTextBox = (textBoxListElement) => {
+        console.log("create", textBoxListElement)
         return(
-			<div key = {text.name.length + 3}>
-                <LogoImage style = {text} 
-                           handleCloseImageCallback = {this.handleCloseImage}  
-                           handleImageResizeDragCallback = {this.handleImageResizeDrag}
-                           onClick={(event) => this.handleChangeFocus(event)}
+			<div key = {textBoxListElement['fontSize'] + textBoxListElement['color']}>
+                <LogoText style = {textBoxListElement} 
+                             handleCloseTextBoxCallback = {this.handleCloseTextBox} 
+                             handleLogoTextBoxTextChangeCallback = {this.handleLogoTextBoxTextChange} 
+                             handleTextBoxDragCallback = {this.handleTextBoxDrag} 
                 />
 			</div>
 		)
@@ -181,7 +195,7 @@ class CreateLogoScreen extends Component {
             textBoxList: newTextList,
             textBoxCounter: textCounter
         });
-        this.createTextBox(newText);
+        
     }
 
     render() {
@@ -278,9 +292,9 @@ class CreateLogoScreen extends Component {
                                 imageErrorAlert = {this.state.imageErrorAlert}
                                 currentImageLink = {this.state.currentImageLink}
                                 // downloadImageCallback = {this.downloadImage}
-                                // createTextBoxCallback = {this.createTextBox}
+                                createTextCallback = {this.createTextBox}
                                 // createImageCallback = {this.createImage}
-                                // addTextBoxCallback = {this.addTextBox}
+                                 addTextBoxCallback = {this.addText}
                                 // addImageCallback = {this.addImage}
                                 // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
                                 // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
