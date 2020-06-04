@@ -4,20 +4,39 @@ import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 
+import GologoloNavBar from './GologoloNavBar.js';
+import LogoText from './LogoText.js';
+import LogoImage from './LogoImage.js';
+import LogoCanvas from './LogoCanvas.js';
+import _ from "lodash";
+
 const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
-            text
-            color
-            fontSize
             backgroundColor
             borderColor
             borderRadius
-            borderThickness
-            padding
+            borderWidth
             margin
-            lastUpdate
+            height
+            width
+            position
+            textBoxList{
+                text
+                color
+                fontSize    
+                x
+                y
+            }
+            imageList{
+                name
+                source
+                width
+                height
+                x
+                y
+            }
         }
     }
 `;
@@ -31,6 +50,33 @@ const DELETE_LOGO = gql`
 `;
 
 class ViewLogoScreen extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {}
+    }
+
+    createTextBox = (e) => {
+        console.log("create", e)
+        return(
+			<div key = {e['fontSize'] + e['color']}>
+                <LogoText style = {e} 
+                            disableDraggingBoolean = {true}
+                />
+			</div>
+		)
+    }
+    createImage = (e) =>{
+        console.log("image ", e)
+		return(
+			<div key = {e.name.length + 3}>
+                <LogoImage style = {e} 
+                          disableDraggingBoolean = {true}
+                />
+			</div>
+		)
+		
+	}
 
     render() {
         
@@ -41,56 +87,36 @@ class ViewLogoScreen extends Component {
                     if (error) return `Error! ${error.message}`;
 
                     const styles = {
-                        container: {
-                            color: data.logo.color,
-                            fontSize: data.logo.fontSize + "pt",
-                            backgroundColor: data.logo.backgroundColor,
-                            
-                            borderRadius: data.logo.borderRadius + "%",
-                            border: data.logo.borderThickness + "px solid " +data.logo.borderColor,
-                            padding: data.logo.padding + "px",
-                            margin: data.logo.margin+ "px",
-                            width: '600px',
-                            float: 'left'
-                            
-                            
-                        
-                        
+                        borderColor: data.logo.borderColor,
+                        backgroundColor: data.logo.backgroundColor, 
+                        borderRadius: parseInt(data.logo.borderRadius) + "px",
+                        borderWidth: parseInt(data.logo.borderWidth) + "px",
+                        borderStyle: "solid",
+                        margin: parseInt(data.logo.margin) + "px",
+                        height: parseInt(data.logo.height) + "px",
+                        width: parseInt(data.logo.width) + "px",
+                        position : "fixed"
                     }
-                    }
+                    var logoTitle = ""
+                    _.map(data.logo.textBoxList, textBoxListElement => logoTitle += textBoxListElement.text)
 
                     return (
                         <div className="container">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
-                                    <button><h4><Link to="/">Home</Link></h4></button>
-                                    <h3 className="panel-title">
-                                        View Logo
-                                    </h3>
+                                    <GologoloNavBar currentScreen = "View Screen"/>
+                                    
+                                    
                                 </div>
+
                                 <div style = {{width: '1200px'}}>
-                                <div className="col s4 panel-body" style={{left:"0", width: '300px', float: 'left'}}>
+                                <div className="col s4 panel-body" style={{ left: "0", width: '200px', 
+                                        marginTop: "10%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                     <dl className="col s4" >
                                         <dt>Text:</dt>
-                                        <dd>{data.logo.text}</dd>
-                                        <dt>Color:</dt>
-                                        <dd>{data.logo.color}</dd>
-                                        <dt>Font Size:</dt>
-                                        <dd>{data.logo.fontSize}</dd>
-                                        <dt>Background Color:</dt>
-                                        <dd>{data.logo.backgroundColor}</dd>
-                                        <dt>Border Color:</dt>
-                                        <dd>{data.logo.borderColor}</dd>
-                                        <dt>Border Radius:</dt>
-                                        <dd>{data.logo.borderRadius}</dd>
-                                        <dt>Border Thickness:</dt>
-                                        <dd>{data.logo.borderThickness}</dd>
-                                        <dt>padding:</dt>
-                                        <dd>{data.logo.padding}</dd>
-                                        <dt>margin:</dt>
-                                        <dd>{data.logo.margin}</dd>
-                                        <dt>Last Updated:</dt>
-                                        <dd>{data.logo.lastUpdate}</dd>
+                                        <dd>{logoTitle}</dd>
+                                        
                                     </dl>
                                     <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
                                         {(removeLogo, { loading, error }) => (
@@ -121,8 +147,11 @@ class ViewLogoScreen extends Component {
                                         )}
                                     </Mutation>
                                 </div>
-                                <div style={ styles.container }>
-                                {data.logo.text}
+                                <div id = "canvasZone" style = {{marginTop: "10%",display : 'flex'}}>
+                                <div id = "logoArea" style = {styles} className = "Boxes">
+                                    {_.map(data.logo.textBoxList, e => this.createTextBox(e))}
+                                    {_.map(data.logo.imageList, e => this.createImage(e))}
+                                </div>
                                 </div>
                                 </div>
                             </div>

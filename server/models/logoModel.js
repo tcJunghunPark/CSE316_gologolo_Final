@@ -27,8 +27,8 @@ var logoModel = new mongoose.Schema({
     fontSize : { type : String, default : "16px"}, 
     background : { type : String, default : "transparent"}, 
     border : { type : String, default : "none"},
-    corX : { type : Number}, 
-    corY : { type : Number}
+    x : { type : Number}, 
+    y : { type : Number}
   }],
 
   imageList : [{ 
@@ -37,8 +37,8 @@ var logoModel = new mongoose.Schema({
     source : String, 
     width : { type : Number, min: 10}, 
     height : { type : Number, min: 10}, 
-    corX : { type : Number}, 
-    corY : { type : Number}, 
+    x : { type : Number}, 
+    y : { type : Number}, 
   }],
 
   lastUpdate: { type: Date, default: Date.now },

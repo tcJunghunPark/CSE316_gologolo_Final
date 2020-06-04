@@ -12,6 +12,8 @@ const GET_LOGOS = gql`
       _id
       textBoxList{
           text
+          x
+          y
       }
       lastUpdate
     }
@@ -20,7 +22,7 @@ const GET_LOGOS = gql`
 
 class HomeScreen extends Component {
     getTitle (logo) {
-        console.log(logo);
+        console.log("logo: ", logo);
         var title = ""
         for(var i = 0; i < logo.length; i++) {
             title += logo[i]['text']
@@ -73,7 +75,7 @@ class HomeScreen extends Component {
                             <div className="col s8">
                                 <div id="home_banner_container">
                                     @todo<br />
-                                    List Maker
+                                    Logo Maker
                                 </div>
                                 <div>
                                    <button className = {createClass}> <Link id="add_logo_button" to="/create">Add Logo</Link></button>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import { Link } from 'react-router-dom';
+
 import GologoloNavBar from './GologoloNavBar.js';
 import LogoText from './LogoText.js';
 import LogoImage from './LogoImage.js';
 import LogoCanvas from './LogoCanvas.js';
 import _ from "lodash";
-import * as html2Canvas from 'html2canvas';
+
 
 
 const ADD_LOGO = gql`
@@ -84,7 +84,7 @@ class CreateLogoScreen extends Component {
                     background : "transparent",
                     border : "none",
                     x: 30,
-                    y: 30
+                    y: 30,
                 },
             ],
             imageList : [
@@ -276,6 +276,7 @@ class CreateLogoScreen extends Component {
         }
         const newTextList = this.state.textBoxList;
         newTextList.push(newText)
+        console.log("check xy",newText)
         this.setState({
             textBoxList: newTextList,
             textBoxCounter: textCounter
@@ -417,11 +418,10 @@ class CreateLogoScreen extends Component {
                                 // downloadImageCallback = {this.downloadImage}
                                 createTextCallback = {this.createTextBox}
                                 createImageCallback = {this.createImage}
-                                 addTextBoxCallback = {this.addText}
-                                // addImageCallback = {this.addImage}
+                                
                                 // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
                                 // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
-                                // handleCloseImageCallback = {this.handleCloseImage}
+                                handleCloseImageCallback = {this.handleCloseImage}
                                  handleCloseTextBoxCallback = {this.closeText}
                             />
                         </div>

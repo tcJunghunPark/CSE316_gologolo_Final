@@ -13,8 +13,8 @@ let LogoModel = require('../models/logoModel');
 
 //SECTION: TextBox type and input
 
-var TextboxType = new GraphQLObjectType({
-    name: "TextBox",
+var TextBoxType = new GraphQLObjectType({
+    name: "TextBoxType",
         fields: function () {
             return {
                 name : {
@@ -45,7 +45,7 @@ var TextboxType = new GraphQLObjectType({
      },
 });
 
-var TextboxInput = new GraphQLInputObjectType({
+var TextBoxInput = new GraphQLInputObjectType({
     name: "TextBoxInput",
     fields: function () {
         return {
@@ -87,7 +87,7 @@ var logoImageType = new GraphQLObjectType({
             name: {
                 type: GraphQLString,
             },
-            url: {
+            source: {
                 type: GraphQLString,
             },
             width : {
@@ -176,7 +176,7 @@ var logoType = new GraphQLObjectType({
                 type : GraphQLInt
             },
             textBoxList: {
-                type: GraphQLList(TextboxType),
+                type: GraphQLList(TextBoxType),
             },
             imageList: {
                 type: GraphQLList(logoImageType),
@@ -266,7 +266,7 @@ var mutation = new GraphQLObjectType({
                             type : new GraphQLNonNull(GraphQLInt)
                         },
                         textBoxList : {
-                            type: new GraphQLNonNull(GraphQLList(TextboxInput)),
+                            type: new GraphQLNonNull(GraphQLList(TextBoxInput)),
                         },
                         imageList: {
                             type: new GraphQLNonNull(GraphQLList(ImageTypeInput)),
@@ -323,7 +323,7 @@ var mutation = new GraphQLObjectType({
                             type : new GraphQLNonNull(GraphQLInt)
                         },
                         textBoxList : {
-                            type: new GraphQLNonNull(GraphQLList(TextboxInput)),
+                            type: new GraphQLNonNull(GraphQLList(TextBoxInput)),
                         },
                         imageList: {
                             type: new GraphQLNonNull(GraphQLList(ImageTypeInput)),
