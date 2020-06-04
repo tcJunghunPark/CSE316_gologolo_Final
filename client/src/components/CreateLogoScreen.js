@@ -335,8 +335,9 @@ class CreateLogoScreen extends Component {
                         <div className="panel panel-default">
                             
                             <GologoloNavBar currentScreen = "Create Logo"/>
-                            <div id = "creatHeading"className="panel-heading">
-                            </div>
+                                <div id = "creatHeading"className="panel-heading">
+
+                        </div>
                             <div className="panel-body">
                                 <form onSubmit={e => {
                                     e.preventDefault();

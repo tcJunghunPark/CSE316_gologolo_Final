@@ -159,7 +159,8 @@ class ViewLogoScreen extends Component {
                                                          
                                                          margin: data.logo.margin+ "px",
                                                          borderWidth: data.logo.borderWidth,
-                                                         borderColor: data.logo.borderColor
+                                                         borderColor: data.logo.borderColor,
+                                                         
                                                     }
                                                 }} 
                                                     className="btn btn-success">Edit</Link>&nbsp;
