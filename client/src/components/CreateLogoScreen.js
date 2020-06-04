@@ -175,6 +175,36 @@ class CreateLogoScreen extends Component {
 		})
     }
 
+    handleLogoTextBoxTextChange = (textBoxToUpdate, newStyle) => {
+        const newTexBoxtList = this.state.textBoxList;
+        const updatedBugCounter = this.state.bugCounter + 1;
+        for(var i = 0; i < newTexBoxtList.length; i++){
+            if(newTexBoxtList[i].name == textBoxToUpdate){
+                newTexBoxtList[i] = newStyle;
+                break;
+            }
+        }
+        this.setState({
+            textBoxList : newTexBoxtList,
+            bugCounter : updatedBugCounter
+        })
+    }
+
+    handleTextBoxDrag = (textBoxToUpdate, newStyle) => {
+        const newTextBoxList = this.state.textBoxList;
+        const updatedBugCounter = this.state.bugCounter + 1;
+        for(var i = 0; i < newTextBoxList.length; i++){
+            if(newTextBoxList[i].name == textBoxToUpdate){
+                newTextBoxList[i] = newStyle;
+                break;
+            }
+        }
+        this.setState({
+            textBoxList : newTextBoxList,
+            bugCounter : updatedBugCounter
+        })
+    }
+
     createTextBox = (e) => {
         console.log("create", e)
         return(
