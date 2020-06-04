@@ -35,10 +35,10 @@ var TextboxType = new GraphQLObjectType({
                 border : {
                     type : GraphQLString
                 },
-                corX: {
+                x: {
                     type: GraphQLInt,
                 },
-                corY: {
+                y: {
                     type: GraphQLInt,
                 },
         };
@@ -67,10 +67,10 @@ var TextboxInput = new GraphQLInputObjectType({
             border : {
                 type : GraphQLString
             },
-            corX: {
+            x: {
                 type: GraphQLInt,
             },
-            corY: {
+            y: {
                 type: GraphQLInt,
             },
         };
@@ -81,7 +81,7 @@ var TextboxInput = new GraphQLInputObjectType({
 // SECTION: Image type and input
 
 var logoImageType = new GraphQLObjectType({
-    name: "logoImage",
+    name: "logoImageType",
     fields: function () {
         return {
             name: {
@@ -96,10 +96,10 @@ var logoImageType = new GraphQLObjectType({
             height : {
                 type : GraphQLInt
             },
-            corX: {
+            x: {
                 type: GraphQLInt,
             },
-            corY: {
+            y: {
                 type: GraphQLInt,
             },
         };
@@ -107,13 +107,13 @@ var logoImageType = new GraphQLObjectType({
 });
 
 var ImageTypeInput = new GraphQLInputObjectType({
-    name: "logoImageInput",
+    name: "ImageTypeInput",
     fields: function () {
         return {
             name: {
                 type: GraphQLString,
             },
-            url: {
+            source: {
                 type: GraphQLString,
             },
             width : {
@@ -122,10 +122,10 @@ var ImageTypeInput = new GraphQLInputObjectType({
             height : {
                 type : GraphQLInt
             },
-            corX: {
+            x: {
                 type: GraphQLInt,
             },
-            corY: {
+            y: {
                 type: GraphQLInt,
             },
         };
@@ -153,9 +153,7 @@ var logoType = new GraphQLObjectType({
             borderWidth: {
                 type: GraphQLInt,
             },
-            padding:{
-                type: GraphQLInt,
-            },
+            
             margin: {
                 type: GraphQLInt,
             },
@@ -245,9 +243,7 @@ var mutation = new GraphQLObjectType({
                         borderWidth: {
                             type: new GraphQLNonNull(GraphQLInt),
                         }, 
-                        padding:{
-                            type: new GraphQLNonNull(GraphQLInt),
-                        },
+                        
                         margin: {
                             type: new GraphQLNonNull(GraphQLInt),
                         },
@@ -304,9 +300,7 @@ var mutation = new GraphQLObjectType({
                         borderWidth: {
                             type: new GraphQLNonNull(GraphQLInt),
                         },
-                        padding:{
-                            type: new GraphQLNonNull(GraphQLInt),
-                        },
+                        
                         margin: {
                             type: new GraphQLNonNull(GraphQLInt),
                         },

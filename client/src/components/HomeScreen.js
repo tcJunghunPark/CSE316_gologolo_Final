@@ -19,7 +19,14 @@ const GET_LOGOS = gql`
 `;
 
 class HomeScreen extends Component {
-
+    getTitle (logo) {
+        console.log(logo);
+        var title = ""
+        for(var i = 0; i < logo.length; i++) {
+            title += logo[i]['text']
+        }
+        return title
+    }
     render() {
         let createClass = "waves-effect waves-light btn-small";
         
@@ -41,8 +48,10 @@ class HomeScreen extends Component {
                         <div className="container_home">
                             <div className="col s4 ">
                                 <div id = "workList">
-                                <div id = "recentwork"><h3>Recent Work</h3></div>
-                                </div>
+                                        <div id = "recentwork">
+                                            <h3>Recent Work</h3>
+                                        </div>
+                                    
                                 {data.logos.sort(function(logo1, logo2){
                                     if(logo1.lastUpdate == logo2.lastUpdate){
                                         return 0;
@@ -54,9 +63,11 @@ class HomeScreen extends Component {
                                 }).map((logo, index) => (
                                     <div key={index} className='home_logo_link'
                                         style={{ cursor: "pointer" }}>
-                                        <Link to={`/view/${logo._id}`}>{logo.text}</Link>
+                                        <Link to={`/view/${logo._id}`}>{"* " + this.getTitle(logo.textBoxList)}</Link>
                                     </div>
+                                
                                 ))}
+                                </div>
                             </div>
                             </div>
                             <div className="col s8">

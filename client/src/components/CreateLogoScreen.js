@@ -11,12 +11,12 @@ import * as html2Canvas from 'html2canvas';
 
 
 const ADD_LOGO = gql`
-    mutation AddLogo(
+    mutation addLogo(
         $backgroundColor: String!
     $borderColor: String!
     $borderRadius: Int!
     $borderWidth: Int!
-    $padding: Int!,
+    
     $margin: Int!,
     $height: Int!,
     $width: Int!,
@@ -32,7 +32,7 @@ const ADD_LOGO = gql`
       borderColor: $borderColor,
       borderRadius: $borderRadius,
       borderWidth: $borderWidth,
-      padding: $padding,
+      
       margin: $margin,
       height : $height,
       width : $width,
@@ -53,8 +53,8 @@ class CreateLogoScreen extends Component {
         super(props);
         this.state = {
             text: "TEXT",
-            color: "black",
-            fontSize: 20,
+            textBoxFontColor: "black",
+            textBoxFontSize: 20,
 
             source: "",
 
@@ -68,9 +68,6 @@ class CreateLogoScreen extends Component {
             height: 750,
             width: 800,
             position : "absolute", 
-
-            textBoxFontColor : "#000000",
-            textBoxFontSize : 12,
 
             imageURL : "", 
             textBoxCounter : 1,
@@ -164,6 +161,14 @@ class CreateLogoScreen extends Component {
     marginChange = (e) => {
         console.log("margin Change");
         this.setState({ margin: e.target.value + "px" });
+    }
+    widthChange = (e) => {
+        console.log("width Change");
+        this.setState({ width: e.target.value + "px" });
+    }
+    heightChange = (e) => {
+        console.log("height Change");
+        this.setState({ height: e.target.value + "px" });
     }
 
     closeText = (textBoxToDelete) => {
@@ -340,7 +345,7 @@ class CreateLogoScreen extends Component {
                                             borderColor : this.state.borderColor,
                                             borderRadius : parseInt(this.state.borderRadius),
                                             borderWidth : parseInt(this.state.borderWidth),
-                                            padding : parseInt(this.state.padding),
+                                            
                                             margin : parseInt(this.state.margin),
                                             height : parseInt(this.state.height),
                                             border : this.state.border,
@@ -373,17 +378,27 @@ class CreateLogoScreen extends Component {
                                             <div className="form-group">
                                                 <label htmlFor="borderRadius">Border Radius:</label>
                                                 <input type="number" className="form-control" name="borderRadius" 
-                                                 min='0' max='50' placeholder="Border Radius" defaultValue={30} onChange={this.borderRadiusChange} />
+                                                 min='0' max='50' placeholder="Border Radius" defaultValue={20} onChange={this.borderRadiusChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="borderWidth">Border Width:</label>
                                                 <input type="number" className="form-control" name="borderWidth" 
-                                                min='0' max='144' placeholder="Border Width" defaultValue={10} onChange={this.borderWidthChange} />
+                                                min='0' max='144' placeholder="Border Width" defaultValue={this.state.borderWidth} onChange={this.borderWidthChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="margin">Margin:</label>
                                                 <input type="number" className="form-control" name="margin" 
                                                  min='0' max='100' placeholder="Margin" defaultValue={10} onChange={this.marginChange} />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="width">Width:</label>
+                                                <input type="number" className="form-control" name="width" 
+                                                 min='100' max='1000' placeholder="Canvas Width" defaultValue={this.state.width} onChange={this.widthChange} />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="height">Height:</label>
+                                                <input type="number" className="form-control" name="height" 
+                                                 min='100' max='1000' placeholder="Canvas Height" defaultValue={this.state.height} onChange={this.heightChange} />
                                             </div>
                                             <button type="submit" className="btn btn-success">Submit</button>
                                         </div>
