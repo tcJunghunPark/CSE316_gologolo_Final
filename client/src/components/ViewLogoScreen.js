@@ -143,19 +143,24 @@ class ViewLogoScreen extends Component {
                                                         removeLogo({ variables: { id: data.logo._id } });
                                                     }}>
                                                     <Link to={{pathname: `/edit/${data.logo._id}`
-                                                    // , state: {
-                                                    //      text: data.logo.text,
-                                                    //      color: data.logo.color,
-                                                    //      fontSize: data.logo.fontSize + "pt",
-                                                    //      backgroundColor: data.logo.backgroundColor,
+                                                    , state: {
+                                                         textBoxList: data.logo.textBoxList,
+                                                         imgaeList: data.logo.imageList,
+
+                                                         textBoxFontColor: data.logo.textBoxFontColor,
+                                                         textBoxFontSize : data.logo.textBoxFontSize + "pt",
+                                                         width: data.logo.width,
+                                                         height: data.logo.height,
+                                                         position: data.logo.position,
+                                                         backgroundColor: data.logo.backgroundColor,
                                                          
-                                                    //      borderRadius: data.logo.borderRadius + "%",
-                                                    //      border: data.logo.borderThickness + "px solid " + data.logo.borderColor,
-                                                    //      padding: data.logo.padding + "px",
-                                                    //      margin: data.logo.margin+ "px",
-                                                    //      borderThickness: data.logo.borderThickness,
-                                                    //      borderColor: data.logo.borderColor
-                                                    // }
+                                                         borderRadius: data.logo.borderRadius + "%",
+                                                         border: data.logo.borderWidth + "px solid " + data.logo.borderColor,
+                                                         
+                                                         margin: data.logo.margin+ "px",
+                                                         borderWidth: data.logo.borderWidth,
+                                                         borderColor: data.logo.borderColor
+                                                    }
                                                 }} 
                                                     className="btn btn-success">Edit</Link>&nbsp;
                                                 <button type="submit" className="btn btn-danger">Delete</button>

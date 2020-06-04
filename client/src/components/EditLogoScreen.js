@@ -7,46 +7,74 @@ const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
-            text
-            color
-            fontSize
             backgroundColor
             borderColor
             borderRadius
-            borderThickness
-            padding
+            borderWidth
             margin
-            lastUpdate
+            height
+            width
+            position
+            textBoxFontColor
+            textBoxFontSize
+            textBoxList{
+                name
+                text
+                color
+                fontSize
+                border
+                background
+                x
+                y
+            }
+            imageList{
+                name
+                source
+                width
+                height
+                x
+                y
+            }
         }
     }
 `;
 
 const UPDATE_LOGO = gql`
     mutation updateLogo(
-        $id: String!,
-        $text: String!,
-        $color: String!,
-        $fontSize: Int!,
-        $backgroundColor: String!,
-        $borderColor: String!,
-        $borderRadius: Int!,
-        $borderThickness: Int!,
-        $padding: Int!,
-        $margin: Int!) {
-            updateLogo(
-                id: $id,
-                text: $text,
-                color: $color,
-                fontSize: $fontSize,
-                backgroundColor: $backgroundColor,
-                borderColor: $borderColor,
-                borderRadius: $borderRadius,
-                borderThickness: $borderThickness,
-                padding: $padding,
-                margin: $margin) {
-                    lastUpdate
-                }
-        }
+        $id : String!,
+    $backgroundColor: String!
+    $borderColor: String!
+    $borderRadius: Int!
+    $borderWidth: Int!
+    $margin: Int!,
+    $height: Int!,
+    $width: Int!,
+    $border : String!,
+    $position : String!,
+    $textBoxFontColor : String!,
+    $textBoxFontSize : Int!,
+    $textBoxList : [logoTextBoxInput]!,
+    $imageList : [logoImageInput]!
+  ) {
+    updateLogo(
+      id : $id
+      backgroundColor: $backgroundColor,
+      borderColor: $borderColor,
+      borderRadius: $borderRadius,
+      borderWidth: $borderWidth,
+      margin: $margin,
+      height : $height,
+      width : $width,
+      border : $border,
+      position : $position,
+      textBoxFontColor : $textBoxFontColor,
+      textBoxFontSize : $textBoxFontSize,
+      textBoxList : $textBoxList,
+      imageList : $imageList
+    ) {
+      lastUpdate
+    }
+  }
 `;
 let inputText, inputColor,inputBorder, inputFontSize,inputBackgroundColor,inputBorderThickness,inputBorderRadius,inputBorderColor,inputPadding,inputMargin;
 
