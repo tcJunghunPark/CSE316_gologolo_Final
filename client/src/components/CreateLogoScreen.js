@@ -6,6 +6,7 @@ import GologoloNavBar from './GologoloNavBar.js';
 import LogoText from './LogoText.js';
 import LogoImage from './LogoImage.js';
 import LogoCanvas from './LogoCanvas.js';
+import _ from "lodash";
 import * as html2Canvas from 'html2canvas';
 
 
@@ -164,12 +165,22 @@ class CreateLogoScreen extends Component {
         console.log("margin Change");
         this.setState({ margin: e.target.value + "px" });
     }
+
+    closeText = (textBoxToDelete) => {
+		const newTextBoxList = _.filter(this.   state.textBoxList, textBoxListElement => textBoxListElement.name !== textBoxToDelete)
+        const updatedBugCounter = this.state.bugCounter + 1;
+		this.setState({
+			textBoxList : newTextBoxList,
+			bugCounter : updatedBugCounter
+		})
+    }
+
     createTextBox = (e) => {
         console.log("create", e)
         return(
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
-                             handleCloseTextBoxCallback = {this.handleCloseTextBox} 
+                             handleCloseTextBoxCallback = {this.closeText} 
                              handleLogoTextBoxTextChangeCallback = {this.handleLogoTextBoxTextChange} 
                              handleTextBoxDragCallback = {this.handleTextBoxDrag} 
                 />
@@ -216,19 +227,19 @@ class CreateLogoScreen extends Component {
         const reg =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
         if(reg.test(this.state.imageURL)){
 			const imageCounter = this.state.imageCounter+1;
-			const newImageList = 'image' + imageCounter + this.state.imageURL;
+			const newImageListName = 'image' + imageCounter + this.state.imageURL;
 			const newImage = {
-				name : newImageList, 
+				name : newImageListName, 
 				source : this.state.imageURL,
 				width : 400,
 				height : 500, 
 				x : 400, 
 				y : 100
             }
-            const updatedImageList = this.state.imageList
-            updatedImageList.push(newImage)
+            const newImageList = this.state.imageList
+            newImageList.push(newImage)
 			this.setState({
-				imageList : updatedImageList,
+				imageList : newImageList,
 				currentImageLink : "",
 				imageCounter : imageCounter
 			});
@@ -341,7 +352,7 @@ class CreateLogoScreen extends Component {
                                 // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
                                 // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
                                 // handleCloseImageCallback = {this.handleCloseImage}
-                                // handleCloseTextBoxCallback = {this.handleCloseTextBox}
+                                 handleCloseTextBoxCallback = {this.closeText}
                             />
                         </div>
                         <form onSubmit={(e) => {

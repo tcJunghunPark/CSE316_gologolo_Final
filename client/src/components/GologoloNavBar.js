@@ -10,7 +10,7 @@ class GologoloNavBar extends Component {
       const customNavBarTheme = createMuiTheme({
         palette: {
           primary: {
-            main: "#2252bb",
+            main: "rgb(131, 206, 224)",
           },
         },
 	  });
