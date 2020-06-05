@@ -7,13 +7,16 @@ import { Query, Mutation } from 'react-apollo';
 import GologoloNavBar from './GologoloNavBar.js';
 import LogoText from './LogoText.js';
 import LogoImage from './LogoImage.js';
-import LogoCanvas from './LogoCanvas.js';
+import download from 'downloadjs';
+import * as html2Canvas from 'html2canvas';
+
 import _ from "lodash";
 
 const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
+            name
             backgroundColor
             borderColor
             borderRadius
@@ -72,11 +75,18 @@ class ViewLogoScreen extends Component {
 			<div key = {e.name.length + 3}>
                 <LogoImage style = {e} 
                           disableDraggingBoolean = {true}
+                          
                 />
 			</div>
 		)
 		
+    }
+    downloadImage() {
+		html2Canvas(document.getElementById("logoArea"), {useCORS : true}).then(function(canvas)  {  
+			download(canvas.toDataURL("image/png"), "gologoloLogo.png");
+		  });
 	}
+
 
     render() {
         
@@ -102,7 +112,7 @@ class ViewLogoScreen extends Component {
 
                     return (
                         <div className="container">
-                            <div className="panel panel-default">
+                            <div className="panel panel-default" style = {{marginLeft : "-200px"}}>
                                 <div className="panel-heading">
                                     <GologoloNavBar currentScreen = "View Screen"/>
                                     
@@ -114,8 +124,8 @@ class ViewLogoScreen extends Component {
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                                     <dl className="col s4" >
-                                        <dt>Text:</dt>
-                                        <dd>{logoTitle}</dd>
+                                        <dt>Logo Title:</dt>
+                                        <dd>{data.logo.name}</dd>
                                         <dt>Background Color:</dt>
                                         <dd>{data.logo.backgroundColor}</dd>
                                         <dt>Border Color:</dt>
@@ -144,7 +154,7 @@ class ViewLogoScreen extends Component {
                                                     }}>
                                                     <Link to={{pathname: `/edit/${data.logo._id}`
                                                     , state: {
-                                                            
+                                                        name: data.logo.name,
                                                          textBoxList: data.logo.textBoxList,
                                                          imageList: data.logo.imageList,
 
@@ -179,6 +189,18 @@ class ViewLogoScreen extends Component {
                                         {_.map(data.logo.imageList, e => this.createImage(e))}
                                     </div>
                                 </div>
+                                <form onSubmit={(e) => {
+                            
+                        }} style = {{marginLeft : "1100px"}}>
+                           
+                        <div id = "rightone" className = 'righttside' style={{ left: "700", width: '250px', 
+                                        marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                                             <h3>Export Logo</h3>
+                            
+                            <button type="button" className="btn btn-success" onClick = {this.downloadImage}>Export</button>
+                        </div>
+                        </form>
                                 </div>
                             </div>
                         </div>

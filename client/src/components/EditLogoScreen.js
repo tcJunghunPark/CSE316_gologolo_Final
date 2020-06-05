@@ -13,6 +13,7 @@ const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
+            name
             backgroundColor
             borderColor
             borderRadius
@@ -48,6 +49,7 @@ const GET_LOGO = gql`
 const UPDATE_LOGO = gql`
     mutation updateLogo(
         $id : String!,
+    $name: String!
     $backgroundColor: String!
     $borderColor: String!
     $borderRadius: Int!
@@ -64,6 +66,7 @@ const UPDATE_LOGO = gql`
   ) {
     updateLogo(
       id : $id
+      name: $name,
       backgroundColor: $backgroundColor,
       borderColor: $borderColor,
       borderRadius: $borderRadius,
@@ -88,23 +91,7 @@ class EditLogoScreen extends Component {
     constructor(props){
         super(props);
         console.log("props!", this.props.location.state);
-    // }
-    // componentWillMount () {
-        
-    //     const {handle} = this.props.match.params
-        
-    //     const {textBoxList} = this.props.location.state
-    //     const {imageList} = this.props.location.state
-        
-    //     const {width} = this.props.location.state
-    //     const {height} = this.props.location.state
-    //     const {position} = this.props.location.state
-    //     const {backgroundColor} = this.props.location.state
-    //     const {borderRadius} = this.props.location.state
-    //     const {border} = this.props.location.state
-    //     const {margin} = this.props.location.state
-    //     const {borderWidth} = this.props.location.state
-    //     const {borderColor} = this.props.location.state
+  
         
         var tbList  = this.props.location.state.textBoxList;
         var imgList = this.props.location.state.imageList;
@@ -118,10 +105,8 @@ class EditLogoScreen extends Component {
        
 
 
-    //     console.log((tbList))
-    //     console.log(imageList)
         this.state ={
-            
+            name: this.props.location.state.name,
             text: "",
             textBoxFontColor: "black",
             textBoxFontSize: 20,
@@ -221,6 +206,12 @@ class EditLogoScreen extends Component {
         console.log("URL entered")
         var blank_pattern = /^\s+|\s+$/g;
         this.setState({imageURL: e.target.value.replace( blank_pattern, '')});
+    }
+    nameChange = (e) => {
+        console.log("Logo Title Entered")
+        
+        this.setState({name: e.target.value})
+        
     }
 
     closeText = (textBoxToDelete) => {
@@ -418,9 +409,17 @@ class EditLogoScreen extends Component {
                                 </div>
                                     <div className="panel-body">                                           
                                             <form onSubmit={e => {
+                                                var blank_pattern = /^\s+|\s+$/g;
+                                                if(this.state.name.replace( blank_pattern, '') == ''){
+                                                    alert("Please enter the title of the LOGO!")
+                                                    e.preventDefault();
+                                                }else{
+                                                
+                                                
                                                 e.preventDefault();
                                                 updateLogo({ variables: {
                                                     id:data.logo._id,
+                                                    name: this.state.name,
                                                     backgroundColor : this.state.backgroundColor,
                                                     borderColor : this.state.borderColor,
                                                     borderRadius : parseInt(this.state.borderRadius),
@@ -437,6 +436,7 @@ class EditLogoScreen extends Component {
                                                     imageList : this.state.imageList
                                                 },
                                             });
+                                        }
                                             
         
         
@@ -445,6 +445,10 @@ class EditLogoScreen extends Component {
                                                 <div id ="left-panel"className="col s4 panel-body" style={{ left: "0", width: '200px', 
                                                 marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                                 backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                                                     <div className="form-group">
+                                                        <label htmlFor="backgroundColor">Logo Title:</label>
+                                                        <input type="String" className="form-control" name="name" placeholder="Logo Title"  defaultValue={this.state.name} onChange={this.nameChange} />
+                                                    </div>
                                                     <div className="form-group">
                                                         <label htmlFor="backgroundColor">Background Color:</label>
                                                         <input type="color" className="form-control" name="backgroundColor" 
@@ -494,12 +498,9 @@ class EditLogoScreen extends Component {
                                         imageList = {this.state.imageList}
                                         imageErrorAlert = {this.state.imageErrorAlert}
                                         currentImageLink = {this.state.imageURL}
-                                        // downloadImageCallback = {this.downloadImage}
                                         createTextCallback = {this.createTextBox}
                                         createImageCallback = {this.createImage}
-                                        
-                                        
-                                        handleCloseImageCallback = {this.handleCloseImage}
+                                       
                                          handleCloseTextBoxCallback = {this.closeText}
                                     />
                                 </div>

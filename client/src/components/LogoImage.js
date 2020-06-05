@@ -23,6 +23,7 @@ class LogoImage extends Component {
 
     handleImageDrag = (image, newCord, cleanCord) => {
         const newCoordinates = newCord
+        if(this.props.enableResizing ===undefined){
         if(cleanCord){
             let newWidth = parseInt(newCoordinates['width'].replace("px", ""));
             let newHeight = parseInt(newCoordinates['height'].replace("px", ""));
@@ -31,6 +32,7 @@ class LogoImage extends Component {
             newCoordinates['height'] = newHeight;
         }
         this.props.handleImageResizeDragCallback(image, newCord)
+    }
     }
     
     closeImageClick = () => {
@@ -42,8 +44,12 @@ class LogoImage extends Component {
 
     render() {
         var unviewDragging = true
+        var visible = "hidden"
+        var resizing =  {top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
         if(this.props.disableDraggingBoolean === undefined){
             unviewDragging = false
+            resizing =  {top:false, right:true, bottom:true, left:false, topRight:false, bottomRight:true, bottomLeft:false, topLeft:false}
+            visible = "visible"
         }
         console.log('State', this.state)
         console.log('Props', this.props)
@@ -76,12 +82,13 @@ class LogoImage extends Component {
                
 
                 disableDragging = {unviewDragging}
+                enableResizing = {resizing}
                 resizeGrid={[15, 15]}
                 dragGrid={[15, 15]}
                 
             >
                 <img  src = {this.props.style.source} alt = "" width = {this.props.style.width} height = {this.props.style.height}/>
-                <HighlightOffIcon onClick = {this.closeImageClick}style = {{position : "absolute", top : "0px", right : "0px",color : "rgba(126, 126, 125, 0.788)"}}/>
+                <HighlightOffIcon onClick = {this.closeImageClick}style = {{visibility : visible,position : "absolute", top : "0px", right : "0px",color : "rgba(126, 126, 125, 0.788)"}}/>
             </Rnd>
         )
     }

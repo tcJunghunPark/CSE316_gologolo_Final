@@ -56,8 +56,12 @@ class LogoTextBox extends Component {
     render() {
         console.log("textbox render");
         var disableDraggingViewScreen = true
+        var visible = "hidden"
+        var resizing =  {top:false, right:false, bottom:false, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false}
         if(this.props.disableDraggingBoolean === undefined){
             disableDraggingViewScreen = false
+            resizing =  {top:false, right:true, bottom:true, left:false, topRight:false, bottomRight:true, bottomLeft:false, topLeft:false}
+            visible = "visible"
         }
         return (
             <Rnd
@@ -83,14 +87,16 @@ class LogoTextBox extends Component {
                 }}
                 dragGrid={[15, 15]}
                 disableDragging = {disableDraggingViewScreen}
+                enableResizing = {resizing}  
             >
                 <ContentEditable
                     style = {this.state.style}
                     html={this.props.style.text} 
-                    disabled={disableDraggingViewScreen}      
+                    disabled={disableDraggingViewScreen} 
+                       
                     onChange={this.handleLogoTextChange} 
                 />
-                <HighlightOffIcon onClick = {this.closeTextClick}style = {{position : "absolute", top : "0px", right : "0px", color : "rgba(126, 126, 125, 0.788)"}}/>
+                <HighlightOffIcon onClick = {this.closeTextClick}style = {{visibility : visible, position : "absolute", top : "0px", right : "0px", color : "rgba(126, 126, 125, 0.788)"}}/>
             </Rnd>
         )
     } 

@@ -12,6 +12,7 @@ import _ from "lodash";
 
 const ADD_LOGO = gql`
     mutation addLogo(
+        $name: String!
         $backgroundColor: String!
     $borderColor: String!
     $borderRadius: Int!
@@ -28,6 +29,7 @@ const ADD_LOGO = gql`
     $imageList : [ImageTypeInput]!
   ) {
     addLogo(
+        name: $name,
       backgroundColor: $backgroundColor,
       borderColor: $borderColor,
       borderRadius: $borderRadius,
@@ -52,6 +54,7 @@ class CreateLogoScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
+            name: "",
             text: "",
             textBoxFontColor: "black",
             textBoxFontSize: 20,
@@ -174,6 +177,12 @@ class CreateLogoScreen extends Component {
         console.log("URL entered")
         var blank_pattern = /^\s+|\s+$/g;
         this.setState({imageURL: e.target.value.replace( blank_pattern, '')});
+    }
+    nameChange = (e) => {
+        console.log("Logo Title Entered")
+       
+        this.setState({name: e.target.value})
+        
     }
 
     closeText = (textBoxToDelete) => {
@@ -354,9 +363,15 @@ class CreateLogoScreen extends Component {
                         </div>
                             <div className="panel-body">
                                 <form onSubmit={e => {
+                                    var blank_pattern = /^\s+|\s+$/g;
+                                    if(this.state.name.replace( blank_pattern, '') == ''){
+                                        alert("Please enter the title of the LOGO!")
+                                        e.preventDefault();
+                                    }else{
                                     e.preventDefault();
                                     addLogo({
                                         variables: {
+                                            name: this.state.name,
                                             backgroundColor : this.state.backgroundColor,
                                             borderColor : this.state.borderColor,
                                             borderRadius : parseInt(this.state.borderRadius),
@@ -374,13 +389,18 @@ class CreateLogoScreen extends Component {
                                         },
                                     });
                                     
-
+                                }
 
                                 }} style = {{marginLeft : "-200px"}}>
                                     <div stylestyle={{ width: '1200px', borderStyle: "solid", borderColor: "black" }}>
                                         <div id ="left-panel"className="col s4 panel-body" style={{ left: "0", width: '200px', 
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                                            <div className="form-group">
+                                                <label htmlFor="backgroundColor">Logo Title:</label>
+                                                <input type="String" className="form-control" name="name" 
+                                                 placeholder="Logo Title"  defaultValue={this.state.name} onChange={this.nameChange} />
+                                            </div>
                                             <div className="form-group">
                                                 <label htmlFor="backgroundColor">Background Color:</label>
                                                 <input type="color" className="form-control" name="backgroundColor" 
@@ -430,13 +450,11 @@ class CreateLogoScreen extends Component {
                                 imageList = {this.state.imageList}
                                 imageErrorAlert = {this.state.imageErrorAlert}
                                 currentImageLink = {this.state.imageURL}
-                                // downloadImageCallback = {this.downloadImage}
+                                
                                 createTextCallback = {this.createTextBox}
                                 createImageCallback = {this.createImage}
                                 
-                                onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
-                                handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
-                                
+                               
                                  handleCloseTextBoxCallback = {this.closeText}
                             />
                         </div>

@@ -141,6 +141,9 @@ var logoType = new GraphQLObjectType({
             _id: {
             type: GraphQLString,
             },
+            name: {
+                type: GraphQLString,
+            },
             backgroundColor: {
                 type: GraphQLString,
             },
@@ -230,6 +233,9 @@ var mutation = new GraphQLObjectType({
             addLogo: {
                 type: logoType,
                     args: {
+                        name: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
                   
                         backgroundColor: {
                             type: new GraphQLNonNull(GraphQLString),
@@ -288,6 +294,9 @@ var mutation = new GraphQLObjectType({
                             name: "id",
                             type: new GraphQLNonNull(GraphQLString),
                         },
+                        name: {
+                            type: new GraphQLNonNull(GraphQLString),
+                        },
                         backgroundColor: {
                             type: new GraphQLNonNull(GraphQLString),
                         },
@@ -333,6 +342,7 @@ var mutation = new GraphQLObjectType({
                         return LogoModel.findByIdAndUpdate(
                             params.id,
                             {
+                            name: params.name,
                             backgroundColor: params.backgroundColor,
                             borderColor: params.borderColor,
                             borderRadius: params.borderRadius,

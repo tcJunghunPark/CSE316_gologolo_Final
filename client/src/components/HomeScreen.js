@@ -10,6 +10,7 @@ const GET_LOGOS = gql`
   {
     logos {
       _id
+      name
       textBoxList{
           text
           x
@@ -24,9 +25,8 @@ class HomeScreen extends Component {
     getTitle (logo) {
         console.log("logo: ", logo);
         var title = ""
-        for(var i = 0; i < logo.length; i++) {
-            title += logo[i]['text']
-        }
+        title = logo.name;
+        
         return title
     }
     render() {
@@ -65,7 +65,7 @@ class HomeScreen extends Component {
                                 }).map((logo, index) => (
                                     <div key={index} className='home_logo_link'
                                         style={{ cursor: "pointer" }}>
-                                        <Link to={`/view/${logo._id}`}>{"* " + this.getTitle(logo.textBoxList)}</Link>
+                                        <Link to={`/view/${logo._id}`}>{"* " + this.getTitle(logo)}</Link>
                                     </div>
                                 
                                 ))}
@@ -74,7 +74,7 @@ class HomeScreen extends Component {
                             </div>
                             <div className="col s8">
                                 <div id="home_banner_container">
-                                    @todo<br />
+                                    @Gologolo<br />
                                     Logo Maker
                                 </div>
                                 <div>
