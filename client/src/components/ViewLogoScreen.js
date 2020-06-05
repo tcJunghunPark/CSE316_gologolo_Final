@@ -144,7 +144,7 @@ class ViewLogoScreen extends Component {
                                                     }}>
                                                     <Link to={{pathname: `/edit/${data.logo._id}`
                                                     , state: {
-                                                            _id : data.logo._id,
+                                                            
                                                          textBoxList: data.logo.textBoxList,
                                                          imageList: data.logo.imageList,
 
@@ -174,10 +174,10 @@ class ViewLogoScreen extends Component {
                                     </Mutation>
                                 </div>
                                 <div id = "canvasZone" style = {{marginTop: "10%",display : 'flex'}}>
-                                <div id = "logoArea" style = {styles} className = "Boxes">
-                                    {_.map(data.logo.textBoxList, e => this.createTextBox(e))}
-                                    {_.map(data.logo.imageList, e => this.createImage(e))}
-                                </div>
+                                    <div id = "logoArea" style = {styles} className = "Boxes">
+                                        {_.map(data.logo.textBoxList, e => this.createTextBox(e))}
+                                        {_.map(data.logo.imageList, e => this.createImage(e))}
+                                    </div>
                                 </div>
                                 </div>
                             </div>

@@ -52,7 +52,7 @@ class CreateLogoScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
-            text: "TEXT",
+            text: "",
             textBoxFontColor: "black",
             textBoxFontSize: 20,
 
@@ -170,6 +170,11 @@ class CreateLogoScreen extends Component {
         console.log("height Change");
         this.setState({ height: e.target.value + "px" });
     }
+    enterURL = (e) => {
+        console.log("URL entered")
+        var blank_pattern = /^\s+|\s+$/g;
+        this.setState({imageURL: e.target.value.replace( blank_pattern, '')});
+    }
 
     closeText = (textBoxToDelete) => {
 		const newTextBoxList = _.filter(this.   state.textBoxList, textBoxListElement => textBoxListElement.name !== textBoxToDelete)
@@ -262,8 +267,13 @@ class CreateLogoScreen extends Component {
 	}
     addText = () =>{
         console.log("add Text to list")
+        var blank_pattern = /^\s+|\s+$/g;
+
         const textCounter = this.state.textBoxCounter + 1;
         const textName = "text" + textCounter;
+        if(this.state.text.replace( blank_pattern, '' ) == ""){
+            alert("Please Enter the Text!")
+        }else{
         const newText = {
             name : textName,
             text : this.state.text,
@@ -281,6 +291,7 @@ class CreateLogoScreen extends Component {
             textBoxList: newTextList,
             textBoxCounter: textCounter
         });
+    }
         
     }
     addImage = () => {
@@ -303,13 +314,16 @@ class CreateLogoScreen extends Component {
 				imageList : newImageList,
 				currentImageLink : "",
 				imageCounter : imageCounter
-			});
+            });
+            console.log("new list", newImageList)
 		} else {
             console.log("Wrong URL received")
+            alert("Wrong URL")
 			this.setState({imageErrorAlert : true, currentImageLink : ""})
 		}
 
     }
+    
 
 
     render() {
@@ -420,9 +434,9 @@ class CreateLogoScreen extends Component {
                                 createTextCallback = {this.createTextBox}
                                 createImageCallback = {this.createImage}
                                 
-                                // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
-                                // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
-                                handleCloseImageCallback = {this.handleCloseImage}
+                                onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
+                                handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
+                                
                                  handleCloseTextBoxCallback = {this.closeText}
                             />
                         </div>
@@ -437,7 +451,7 @@ class CreateLogoScreen extends Component {
                             <div className="form-group">
                                 <label htmlFor="margin">Text:</label>
                                 <input type="String" className="form-control" name="Text" 
-                                 placeholder="text" defaultValue={"TEXT"} onChange={this.textChange}/>
+                                 placeholder="text"  onChange={this.textChange}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="TextColor">Text Color:</label>
@@ -462,10 +476,10 @@ class CreateLogoScreen extends Component {
                             <div className="form-group">
                                 <label htmlFor="margin">Image URL:</label>
                                 <input type="String" className="form-control" name="source"
-                                placeholder="source" defaultValue={"IMG URL"} />
+                                placeholder="source"  onChange = {this.enterURL}/>
                             </div>
                             
-                            <button type="submit" className="btn btn-success" onClick = {this.addImage}>Insert</button>
+                            <button type="button" className="btn btn-success" onClick = {this.addImage}>Insert</button>
                         </div>
                         </form>
 

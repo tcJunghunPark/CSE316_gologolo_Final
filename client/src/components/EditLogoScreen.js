@@ -85,26 +85,29 @@ const UPDATE_LOGO = gql`
 
 
 class EditLogoScreen extends Component {
-    
-    componentWillMount () {
-        const {handle} = this.props.match.params
-        const {_id} = this.props.location.state
-        const {textBoxList} = this.props.location.state
-        const {imageList} = this.props.location.state
-        const {textBoxFontColor} = this.props.location.state
-        const {textBoxFontSize} = this.props.location.state
-        const {width} = this.props.location.state
-        const {height} = this.props.location.state
-        const {position} = this.props.location.state
-        const {backgroundColor} = this.props.location.state
-        const {borderRadius} = this.props.location.state
-        const {border} = this.props.location.state
-        const {margin} = this.props.location.state
-        const {borderWidth} = this.props.location.state
-        const {borderColor} = this.props.location.state
+    constructor(props){
+        super(props);
+        console.log("props!", this.props.location.state);
+    // }
+    // componentWillMount () {
         
-        var tbList  = textBoxList;
-        var imgList = imageList;
+    //     const {handle} = this.props.match.params
+        
+    //     const {textBoxList} = this.props.location.state
+    //     const {imageList} = this.props.location.state
+        
+    //     const {width} = this.props.location.state
+    //     const {height} = this.props.location.state
+    //     const {position} = this.props.location.state
+    //     const {backgroundColor} = this.props.location.state
+    //     const {borderRadius} = this.props.location.state
+    //     const {border} = this.props.location.state
+    //     const {margin} = this.props.location.state
+    //     const {borderWidth} = this.props.location.state
+    //     const {borderColor} = this.props.location.state
+        
+        var tbList  = this.props.location.state.textBoxList;
+        var imgList = this.props.location.state.imageList;
         for(var i = 0; i < tbList.length; i++){
             delete tbList[i]['__typename']
         }
@@ -115,35 +118,36 @@ class EditLogoScreen extends Component {
        
 
 
-        console.log((tbList))
-        console.log(imageList)
-        this.setState({
+    //     console.log((tbList))
+    //     console.log(imageList)
+        this.state ={
             
-            text: "TEXT",
+            text: "",
             textBoxFontColor: "black",
             textBoxFontSize: 20,
 
             source: "",
-            backgroundColor: backgroundColor,
+            backgroundColor: this.props.location.state.backgroundColor,
             
-            borderColor: borderColor,
-            borderRadius:  borderRadius,
-            borderWidth: borderWidth,
-            border: border,
-            margin: margin,
-            height: height,
-            width: width,
-            position: position,
+            borderColor: this.props.location.state.borderColor,
+            borderRadius:  this.props.location.state.borderRadius,
+            borderWidth: this.props.location.state.borderWidth,
+            border: this.props.location.state.border,
+            margin: this.props.location.state.margin,
+            height: this.props.location.state.height,
+            width: this.props.location.state.width,
+            position: "absolute",
             textBoxList : tbList,
-            imageList:imgList,
+            imageList: imgList,
             textBoxCounter : 0,
             imageCounter : 0,
             bugCounter : 0,
             imageErrorAlert : false,
 
             
-        });
+        }
         this.handleBorderWidthChange = this.handleBorderWidthChange.bind(this)
+    
     }
         
     handleBorderWidthChange = (event) =>{
@@ -213,6 +217,11 @@ class EditLogoScreen extends Component {
         console.log("height Change");
         this.setState({ height: e.target.value + "px" });
     }
+    enterURL = (e) => {
+        console.log("URL entered")
+        var blank_pattern = /^\s+|\s+$/g;
+        this.setState({imageURL: e.target.value.replace( blank_pattern, '')});
+    }
 
     closeText = (textBoxToDelete) => {
 		const newTextBoxList = _.filter(this.   state.textBoxList, textBoxListElement => textBoxListElement.name !== textBoxToDelete)
@@ -279,7 +288,7 @@ class EditLogoScreen extends Component {
 
 
     createTextBox = (e) => {
-        console.log("create", e)
+        
         return(
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
@@ -291,7 +300,7 @@ class EditLogoScreen extends Component {
 		)
     }
     createImage = (e) =>{
-        console.log("image ", e)
+        
 		return(
 			<div key = {e.name.length + 3}>
                 <LogoImage style = {e} 
@@ -305,8 +314,13 @@ class EditLogoScreen extends Component {
 	}
     addText = () =>{
         console.log("add Text to list")
+        var blank_pattern = /^\s+|\s+$/g;
+
         const textCounter = this.state.textBoxCounter + 1;
         const textName = "text" + textCounter;
+        if(this.state.text.replace( blank_pattern, '' ) == ""){
+            alert("Please Enter the Text!")
+        }else{
         const newText = {
             name : textName,
             text : this.state.text,
@@ -324,6 +338,7 @@ class EditLogoScreen extends Component {
             textBoxList: newTextList,
             textBoxCounter: textCounter
         });
+    }
         
     }
     addImage = () => {
@@ -346,9 +361,11 @@ class EditLogoScreen extends Component {
 				imageList : newImageList,
 				currentImageLink : "",
 				imageCounter : imageCounter
-			});
+            });
+            console.log("new list", newImageList)
 		} else {
             console.log("Wrong URL received")
+            alert("Wrong URL")
 			this.setState({imageErrorAlert : true, currentImageLink : ""})
 		}
 
@@ -481,8 +498,7 @@ class EditLogoScreen extends Component {
                                         createTextCallback = {this.createTextBox}
                                         createImageCallback = {this.createImage}
                                         
-                                        // onCurrentImageLinkChangeCallback = {this.onCurrentImageLinkChange}
-                                        // handleImageErrorAlertCloseCallback = {this.handleImageErrorAlertClose}
+                                        
                                         handleCloseImageCallback = {this.handleCloseImage}
                                          handleCloseTextBoxCallback = {this.closeText}
                                     />
@@ -498,7 +514,7 @@ class EditLogoScreen extends Component {
                                     <div className="form-group">
                                         <label htmlFor="margin">Text:</label>
                                         <input type="String" className="form-control" name="Text" 
-                                         placeholder="text" defaultValue={"TEXT"} onChange={this.textChange}/>
+                                         placeholder="text"  onChange={this.textChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="TextColor">Text Color:</label>
@@ -523,10 +539,10 @@ class EditLogoScreen extends Component {
                                     <div className="form-group">
                                         <label htmlFor="margin">Image URL:</label>
                                         <input type="String" className="form-control" name="source"
-                                        placeholder="source" defaultValue={"IMG URL"} />
+                                        placeholder="source"  onChange = {this.enterURL}/>
                                     </div>
                                     
-                                    <button type="submit" className="btn btn-success" onClick = {this.addImage}>Insert</button>
+                                    <button type="button" className="btn btn-success" onClick = {this.addImage}>Insert</button>
                                 </div>
                                 </form>
         
