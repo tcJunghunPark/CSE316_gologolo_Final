@@ -392,7 +392,7 @@ class CreateLogoScreen extends Component {
                                 }
 
                                 }} style = {{marginLeft : "-200px"}}>
-                                    <div stylestyle={{ width: '1200px', borderStyle: "solid", borderColor: "black" }}>
+                                    <div style={{ width: '1200px', borderStyle: "solid", borderColor: "black" }}>
                                         <div id ="left-panel"className="col s4 panel-body" style={{ left: "0", width: '200px', 
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>

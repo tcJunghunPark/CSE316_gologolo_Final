@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { Grid, TextField, Button, Link as MaterialUILink } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-// THIS IS HOW WE DISPLAY THE LOGO, IN THIS COMPONENT
+
 class LoginScreen extends Component {
 
     render() {
         return (
-            <div id = "loginScreenMainDiv">
+            <div id = "loginScreenMainDiv" style={{  position: "absolute",left: "30%", width: '600px', 
+            marginTop: "10%", borderStyle: "solid",borderRadius: "5%", borderColor: "black",
+            backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
                 <Grid container direction = "column" justify = "center" alignItems = "center" spacing = "2">
-                    <Grid item id = "logInScreenBanner">
-                        <div id="home_banner_container">
-                            Gologolo
-                        </div>
-                    </Grid>
                     <Grid item>
+                        <h2>Gologolo Login</h2>
                         <TextField id = "loginScreenUserNameTextField" 
                                    label = "Google email" 
                                    variant = "outlined"
@@ -35,13 +33,12 @@ class LoginScreen extends Component {
                         <Button id = "loginScreenLogInButton" 
                                 variant = "contained"
                                 component = {Link}
-                                to = "/">
+                                to = "/home">
                             Log In
                         </Button>
-                    </Grid>
-                    <Grid item>
+                    
                         <MaterialUILink href = "https://accounts.google.com/signup/v2/webcreateaccount?hl=en-GB&flowName=GlifWebSignIn&flowEntry=SignUp" target="_blank" rel="noreferrer">
-                            {"Don't have a Gmail account? Sign Up."}
+                            {"      Sign Up"}
                         </MaterialUILink>
                     </Grid>
                 </Grid>
