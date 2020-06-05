@@ -59,8 +59,8 @@ const UPDATE_LOGO = gql`
     $position : String!,
     $textBoxFontColor : String!,
     $textBoxFontSize : Int!,
-    $textBoxList : [logoTextBoxInput]!,
-    $imageList : [logoImageInput]!
+    $textBoxList : [TextBoxInput]!,
+    $imageList : [ImageTypeInput]!
   ) {
     updateLogo(
       id : $id
@@ -88,8 +88,9 @@ class EditLogoScreen extends Component {
     
     componentWillMount () {
         const {handle} = this.props.match.params
+        const {_id} = this.props.location.state
         const {textBoxList} = this.props.location.state
-        const {imgaeList} = this.props.location.state
+        const {imageList} = this.props.location.state
         const {textBoxFontColor} = this.props.location.state
         const {textBoxFontSize} = this.props.location.state
         const {width} = this.props.location.state
@@ -102,11 +103,25 @@ class EditLogoScreen extends Component {
         const {borderWidth} = this.props.location.state
         const {borderColor} = this.props.location.state
         
+        var tbList  = textBoxList;
+        var imgList = imageList;
+        for(var i = 0; i < tbList.length; i++){
+            delete tbList[i]['__typename']
+        }
 
+        for(var i = 0; i < imgList.length; i++){
+            delete imgList[i]['__typename']
+        }
+       
+
+
+        console.log((tbList))
+        console.log(imageList)
         this.setState({
+            
             text: "TEXT",
-            textBoxFontColor: textBoxFontColor,
-            textBoxFontSize: textBoxFontSize,
+            textBoxFontColor: "black",
+            textBoxFontSize: 20,
 
             source: "",
             backgroundColor: backgroundColor,
@@ -119,8 +134,8 @@ class EditLogoScreen extends Component {
             height: height,
             width: width,
             position: position,
-            textBoxList : textBoxList,
-            imgaeList:imgaeList,
+            textBoxList : tbList,
+            imageList:imgList,
             textBoxCounter : 0,
             imageCounter : 0,
             bugCounter : 0,
@@ -354,6 +369,7 @@ class EditLogoScreen extends Component {
                         console.log("last update: ", data.logo.lastUpdate);
 
                         const style = {
+                            
                             borderColor: this.state.borderColor,
                             backgroundColor: this.state.backgroundColor, 
                             borderRadius: parseInt(this.state.borderRadius) + "px",
@@ -364,7 +380,7 @@ class EditLogoScreen extends Component {
                             width: parseInt(this.state.width) + "px",
                             position : "absolute",
                             textBoxFontColor : this.state.textBoxFontColor,
-                            textBoxFontSize : parseInt(this.state.textBoxFontSize) + "px"
+                            textBoxFontSize : parseInt(this.state.textBoxFontSize) + "pt"
                 
                         }
                    
@@ -387,6 +403,7 @@ class EditLogoScreen extends Component {
                                             <form onSubmit={e => {
                                                 e.preventDefault();
                                                 updateLogo({ variables: {
+                                                    id:data.logo._id,
                                                     backgroundColor : this.state.backgroundColor,
                                                     borderColor : this.state.borderColor,
                                                     borderRadius : parseInt(this.state.borderRadius),

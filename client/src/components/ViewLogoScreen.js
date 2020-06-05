@@ -144,8 +144,9 @@ class ViewLogoScreen extends Component {
                                                     }}>
                                                     <Link to={{pathname: `/edit/${data.logo._id}`
                                                     , state: {
+                                                            _id : data.logo._id,
                                                          textBoxList: data.logo.textBoxList,
-                                                         imgaeList: data.logo.imageList,
+                                                         imageList: data.logo.imageList,
 
                                                          textBoxFontColor: data.logo.textBoxFontColor,
                                                          textBoxFontSize : data.logo.textBoxFontSize + "pt",
