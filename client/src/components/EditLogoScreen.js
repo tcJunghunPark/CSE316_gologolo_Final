@@ -129,6 +129,11 @@ class EditLogoScreen extends Component {
             bugCounter : 0,
             imageErrorAlert : false,
 
+            text2Edit : "",
+            color2Edit : "black",
+            fontsize2Edit : 20,
+            textbox2edit : {},
+
             
         }
         this.handleBorderWidthChange = this.handleBorderWidthChange.bind(this)
@@ -223,19 +228,33 @@ class EditLogoScreen extends Component {
 		})
     }
 
-    textBoxChange = (textBoxToUpdate, newText) => {
-        const newTextList = this.state.textBoxList;
-        const updatedBugCounter = this.state.bugCounter + 1;
-        for(var i = 0; i < newTextList.length; i++){
-            if(newTextList[i].name == textBoxToUpdate){
-                newTextList[i] = newText;
-                break;
-            }
-        }
+    textBoxChange = (textBoxToUpdate) => {
+        console.log("this text clicked",textBoxToUpdate)
+        
         this.setState({
-            textBoxList : newTextList,
-            bugCounter : updatedBugCounter
+            text2Edit : textBoxToUpdate.text,
+            color2Edit : textBoxToUpdate.color,
+            fontsize2Edit : textBoxToUpdate.fontSize,
+            textbox2edit : textBoxToUpdate
         })
+        console.log("text stored ", this.state.textbox2edit)
+        
+    }
+    text2editChange =(e) => {
+        console.log("text to edit")
+       
+        this.setState({text2Edit: e.target.value})
+
+    }
+    colorboxChange = (e) => {
+        console.log("color to edit")
+       
+        this.setState({color2Edit: e.target.value})
+    }
+    fontSizeboxChange = (e) => {
+        console.log("fontsize to edit")
+       
+        this.setState({fontsize2Edit: e.target.value})
     }
 
     textBoxDrag = (textBoxToUpdate, newCoordi) => {
@@ -276,6 +295,36 @@ class EditLogoScreen extends Component {
             bugCounter : updatedBugCounter
         })
     }
+    editText = () => {
+        const textBoxToUpdate = this.state.textbox2edit;
+        const newTextList = this.state.textBoxList;
+        const updatedBugCounter = this.state.bugCounter + 1;
+        console.log("Stored DATA", this.state.fontsize2Edit)
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == textBoxToUpdate.name && newTextList[i].text == textBoxToUpdate.text){
+                console.log("catch!")
+                
+                newTextList[i].text = this.state.text2Edit
+                newTextList[i].color = this.state.color2Edit
+                newTextList[i].fontSize = this.state.fontsize2Edit + "pt"
+                this.setState({
+                    textbox2edit : newTextList[i]
+                })
+                
+                break;
+            }
+        }
+        this.setState({
+            textBoxList : newTextList,
+            bugCounter : updatedBugCounter
+        })
+
+
+
+        
+
+    }
+    
 
 
     createTextBox = (e) => {
@@ -284,7 +333,7 @@ class EditLogoScreen extends Component {
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
                              handleCloseTextBoxCallback = {this.closeText} 
-                             handleLogoTextBoxTextChangeCallback = {this.textBoxChange} 
+                             handleTextChangeCallback = {this.textBoxChange} 
                              handleTextBoxDragCallback = {this.textBoxDrag} 
                 />
 			</div>
@@ -528,14 +577,7 @@ class EditLogoScreen extends Component {
                                          min='0' max='100' placeholder="FontSize" defaultValue={20} onChange={this.fontSizeChange}/>
                                     </div>
                                     <button type="button" className="btn btn-success" onClick = {this.addText}>Create</button>
-                                </div>
-                                </form>
-        
-                                <form style = {{marginLeft : "930px"}}>
-                                   
-                                <div id = "rightone" className = 'righttside' style={{ left: "700", width: '400px', 
-                                                marginTop: "16%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
-                                                backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                               
                                                      <h3>Create Image Box</h3>
                                     <div className="form-group">
                                         <label htmlFor="margin">Image URL:</label>
@@ -544,6 +586,24 @@ class EditLogoScreen extends Component {
                                     </div>
                                     
                                     <button type="button" className="btn btn-success" onClick = {this.addImage}>Insert</button>
+                                    <h3>Edit Text Box</h3>
+                            <div className="form-group">
+                                <label htmlFor="margin">Text:</label>
+                                <input type="String" className="form-control" name="Text" 
+                                 placeholder="text"  defaultValue={this.state.text2Edit} onChange={this.text2editChange}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="TextColor">Text Color:</label>
+                                <input type="color" className="form-control" name="Color"
+                                 placeholder="Text Color" defaultValue={this.state.color2Edit}  onChange={this.colorboxChange}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="font-size">Font-Size:</label>
+                                <input type="number" className="form-control" name="fontSize"
+                                 min='0' max='100' placeholder="FontSize" defaultValue={this.state.fontsize2Edit} onChange={this.fontSizeboxChange}/>
+                            </div>
+                            <button type="button" className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Apply</button>
+                            
                                 </div>
                                 </form>
         

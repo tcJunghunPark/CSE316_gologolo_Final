@@ -19,7 +19,7 @@ class GologoloNavBar extends Component {
 		<ThemeProvider theme = {customNavBarTheme}>
 		  <AppBar>
 			<Toolbar>
-			  <Button component = {Link} to = "/" style = {{fontSize : "32px", color : "white"}}>
+			  <Button component = {Link} to = "/home" style = {{fontSize : "32px", color : "white"}}>
 	  			Gologolo Home | {this.props.currentScreen}
 			  </Button>
 			</Toolbar>

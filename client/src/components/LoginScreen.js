@@ -3,6 +3,20 @@ import { Grid, TextField, Button, Link as MaterialUILink } from '@material-ui/co
 import { Link } from 'react-router-dom'
 
 class LoginScreen extends Component {
+   
+    idChange = (e) => {
+        // this.setState({ id: e.target.value });
+    }
+    pwdChange = (e) => {
+        // this.setState({ pwd: e.target.value });
+    }
+    login = (e) => {
+        // var blank_pattern = /^\s+|\s+$/g;
+        // if(this.state.id.replace( blank_pattern, '') == '' || this.state.pwd.replace( blank_pattern, '') == ''){
+        //     alert("Please Enter ID and Pasword!")
+        //     e.preventDefault();
+    //}
+    }
 
     render() {
         return (
@@ -16,7 +30,10 @@ class LoginScreen extends Component {
                                    label = "Google email" 
                                    variant = "outlined"
                                    autoFocus
-                                   required>
+                                   required
+                                   onChange = {this.idChange}
+                                   >
+                                       
                             Google email
                         </TextField>
                     </Grid>
@@ -25,7 +42,8 @@ class LoginScreen extends Component {
                                    label = "Enter your password" 
                                    variant = "outlined" 
                                    type = "password"
-                                   required>
+                                   required
+                                   onChange = {this.pwdChange}>
                             Enter your password
                         </TextField>
                     </Grid>
@@ -33,6 +51,7 @@ class LoginScreen extends Component {
                         <Button id = "loginScreenLogInButton" 
                                 variant = "contained"
                                 component = {Link}
+                                onClick = {this.login}
                                 to = "/home">
                             Log In
                         </Button>

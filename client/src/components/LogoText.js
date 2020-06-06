@@ -32,17 +32,9 @@ class LogoTextBox extends Component {
         this.props.handleTextBoxDragCallback(newText, newCoordi)
     }
 
-    handleLogoTextChange = (event) =>{
-        const newStyle = {
-            name : this.state.style.name,
-            text : event.target.value,
-            color : this.state.style.color,
-            fontSize : this.state.style.fontSize,
-            background : this.state.style.background,
-            x : this.state.style.x,
-            y : this.state.style.y
-        }
-        this.props.handleLogoTextBoxTextChangeCallback(this.state.style.name, newStyle);
+    handleTextChange = (event) =>{
+        
+        this.props.handleTextChangeCallback(this.state.style);
     }
 
     closeTextClick = () => {
@@ -93,8 +85,9 @@ class LogoTextBox extends Component {
                     style = {this.state.style}
                     html={this.props.style.text} 
                     disabled={disableDraggingViewScreen} 
-                       
-                    onChange={this.handleLogoTextChange} 
+                    
+                    
+                    onMouseUp={this.handleTextChange}
                 />
                 <HighlightOffIcon onClick = {this.closeTextClick}style = {{visibility : visible, position : "absolute", top : "0px", right : "0px", color : "rgba(126, 126, 125, 0.788)"}}/>
             </Rnd>

@@ -73,32 +73,21 @@ class CreateLogoScreen extends Component {
             position : "absolute", 
 
             imageURL : "", 
-            textBoxCounter : 1,
-            imageCounter : 1,
+            textBoxCounter : 0,
+            imageCounter : 0,
             bugCounter : 0,
-            imageErrorAlert : false, 
+            imageErrorAlert : false,
+            
+            text2Edit : "",
+            color2Edit : "black",
+            fontsize2Edit : 20,
+            textbox2edit : {},
 
             textBoxList : [
-                {
-                    name : "text1",
-                    text: "text1",
-                    color: "#00ff00",
-                    fontSize: "30px",
-                    background : "transparent",
-                    border : "none",
-                    x: 30,
-                    y: 30,
-                },
+                
             ],
             imageList : [
-                {
-                    name : "image1",
-                    source : "https://georgetownvoice.com/wp-content/uploads/2019/11/mcr.png",
-                    width : 300,
-                    height : 300,
-                    x : 400,
-                    y : 400,
-                },
+                
             ],
 
 
@@ -120,66 +109,64 @@ class CreateLogoScreen extends Component {
     };
     
     textChange = (e) => {
-        console.log("text change");
-        console.log(e.target.value);
+        
         this.setState({ text: e.target.value });
     }
     colorChange = (e) => {
-        console.log("color Change");
-        console.log(e.target.value);
+        
         this.setState({ color: e.target.value });
 
     }
     fontSizeChange = (e) => {
-        console.log("fontSize");
+        
         this.setState({ fontSize: e.target.value + "pt" });
     }
     backgroundColorChange = (e) => {
-        console.log("background");
+        
         this.setState({ backgroundColor: e.target.value });
     }
     borderRadiusChange = (e) => {
-        console.log("borderRadius Change");
+        
         this.setState({ borderRadius: e.target.value + "%" });
 
     }
     borderWidthChange = (e) => {
-        console.log("borderThickness Change");
+        
         this.setState({
             borderWidth: e.target.value,
             border: e.target.value + "px solid" + this.state.borderColor
         });
     }
     borderColorChange = (e) => {
-        console.log("border color Change");
+        
         this.setState({
             borderColor: e.target.value,
             border: this.state.borderWidth + "px solid" + e.target.value
         });
     }
     paddingChange = (e) => {
-        console.log("padding Change");
+        
         this.setState({ padding: e.target.value + "px" });
     }
     marginChange = (e) => {
-        console.log("margin Change");
+        
         this.setState({ margin: e.target.value + "px" });
     }
     widthChange = (e) => {
-        console.log("width Change");
+        
         this.setState({ width: e.target.value + "px" });
     }
     heightChange = (e) => {
-        console.log("height Change");
+        
         this.setState({ height: e.target.value + "px" });
     }
     enterURL = (e) => {
-        console.log("URL entered")
+        
         var blank_pattern = /^\s+|\s+$/g;
         this.setState({imageURL: e.target.value.replace( blank_pattern, '')});
     }
     nameChange = (e) => {
-        console.log("Logo Title Entered")
+        
        
         this.setState({name: e.target.value})
         
@@ -194,19 +181,33 @@ class CreateLogoScreen extends Component {
 		})
     }
 
-    textBoxChange = (textBoxToUpdate, newText) => {
-        const newTextList = this.state.textBoxList;
-        const updatedBugCounter = this.state.bugCounter + 1;
-        for(var i = 0; i < newTextList.length; i++){
-            if(newTextList[i].name == textBoxToUpdate){
-                newTextList[i] = newText;
-                break;
-            }
-        }
+    textBoxChange = (textBoxToUpdate) => {
+        
+        console.log("clicked TEXT : ", textBoxToUpdate)
         this.setState({
-            textBoxList : newTextList,
-            bugCounter : updatedBugCounter
+            text2Edit : textBoxToUpdate.text,
+            color2Edit : textBoxToUpdate.color,
+            fontsize2Edit : textBoxToUpdate.fontSize,
+            textbox2edit : textBoxToUpdate
         })
+        
+        
+    }
+    text2editChange =(e) => {
+       
+       
+        this.setState({text2Edit: e.target.value})
+
+    }
+    colorboxChange = (e) => {
+        
+       
+        this.setState({color2Edit: e.target.value})
+    }
+    fontSizeboxChange = (e) => {
+        
+       
+        this.setState({fontsize2Edit: e.target.value})
     }
 
     textBoxDrag = (textBoxToUpdate, newCoordi) => {
@@ -232,6 +233,35 @@ class CreateLogoScreen extends Component {
 			bugCounter : updatedBugCounter
 		})
     }
+    editText = () => {
+        const textBoxToUpdate = this.state.textbox2edit;
+        const newTextList = this.state.textBoxList;
+        const updatedBugCounter = this.state.bugCounter + 1;
+        console.log("Stored DATA", this.state)
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == textBoxToUpdate.name && newTextList[i].text == textBoxToUpdate.text){
+                console.log("catch!")
+                
+                newTextList[i].text = this.state.text2Edit
+                newTextList[i].color = this.state.color2Edit
+                newTextList[i].fontSize = this.state.fontsize2Edit + "pt"
+                this.setState({
+                    textbox2edit : newTextList[i]
+                })
+                
+                break;
+            }
+        }
+        this.setState({
+            textBoxList : newTextList,
+            bugCounter : updatedBugCounter
+        })
+
+
+
+        
+
+    }
     
     imageDrag = (imageToUpdate, newStyle) => {
         const newImageList = this.state.imageList;
@@ -250,19 +280,19 @@ class CreateLogoScreen extends Component {
 
 
     createTextBox = (e) => {
-        console.log("create", e)
+        
         return(
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
                              handleCloseTextBoxCallback = {this.closeText} 
-                             handleLogoTextBoxTextChangeCallback = {this.textBoxChange} 
+                             handleTextChangeCallback = {this.textBoxChange} 
                              handleTextBoxDragCallback = {this.textBoxDrag} 
                 />
 			</div>
 		)
     }
     createImage = (e) =>{
-        console.log("image ", e)
+        
 		return(
 			<div key = {e.name.length + 3}>
                 <LogoImage style = {e} 
@@ -275,7 +305,7 @@ class CreateLogoScreen extends Component {
 		
 	}
     addText = () =>{
-        console.log("add Text to list")
+        
         var blank_pattern = /^\s+|\s+$/g;
 
         const textCounter = this.state.textBoxCounter + 1;
@@ -295,7 +325,7 @@ class CreateLogoScreen extends Component {
         }
         const newTextList = this.state.textBoxList;
         newTextList.push(newText)
-        console.log("check xy",newText)
+        
         this.setState({
             textBoxList: newTextList,
             textBoxCounter: textCounter
@@ -324,7 +354,7 @@ class CreateLogoScreen extends Component {
 				currentImageLink : "",
 				imageCounter : imageCounter
             });
-            console.log("new list", newImageList)
+            
 		} else {
             console.log("Wrong URL received")
             alert("Wrong URL")
@@ -392,7 +422,6 @@ class CreateLogoScreen extends Component {
                                 }
 
                                 }} style = {{marginLeft : "-200px"}}>
-                                    <div style={{ width: '1200px', borderStyle: "solid", borderColor: "black" }}>
                                         <div id ="left-panel"className="col s4 panel-body" style={{ left: "0", width: '200px', 
                                         marginTop: "1%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
                                         backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
@@ -438,7 +467,7 @@ class CreateLogoScreen extends Component {
                                             </div>
                                             <button type="submit" className="btn btn-success">Submit</button>
                                         </div>
-                                    </div>
+                                    
                                 </form>
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
@@ -482,14 +511,8 @@ class CreateLogoScreen extends Component {
                                  min='0' max='100' placeholder="FontSize" defaultValue={20} onChange={this.fontSizeChange}/>
                             </div>
                             <button type="button" className="btn btn-success" onClick = {this.addText}>Create</button>
-                        </div>
-                        </form>
-
-                        <form style = {{marginLeft : "930px"}}>
-                           
-                        <div id = "rightone" className = 'righttside' style={{ left: "700", width: '400px', 
-                                        marginTop: "16%",float: 'left', borderStyle: "solid",borderRadius: "5%", borderColor: "black",
-                                        backgroundColor: "rgb(175, 137, 211)" , padding : "20px 20px 20px 20px"}}>
+                        
+                        
                                              <h3>Create Image Box</h3>
                             <div className="form-group">
                                 <label htmlFor="margin">Image URL:</label>
@@ -498,7 +521,32 @@ class CreateLogoScreen extends Component {
                             </div>
                             
                             <button type="button" className="btn btn-success" onClick = {this.addImage}>Insert</button>
-                        </div>
+                            <h3>Edit Text Box</h3>
+                            <div className="form-group">
+                                <label htmlFor="margin">Text:</label>
+                                <input type="String" className="form-control" name="Text" 
+                                 placeholder="text"  defaultValue={this.state.text2Edit} onChange={this.text2editChange}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="TextColor">Text Color:</label>
+                                <input type="color" className="form-control" name="Color"
+                                 placeholder="Text Color" defaultValue={this.state.color2Edit}  onChange={this.colorboxChange}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="font-size">Font-Size:</label>
+                                <input type="number" className="form-control" name="fontSize"
+                                 min='0' max='100' placeholder="FontSize" defaultValue={this.state.fontsize2Edit} onChange={this.fontSizeboxChange}/>
+                            </div>
+                            <button type="button" className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Apply</button>
+                            <button type="button" style ={{backgroundColor: "red", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Move UP</button>
+                            <button type="button" style ={{backgroundColor: "blue", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Move Down</button>
+                            
+                            
+                            
+                            
+                            
+                            
+                            </div>
                         </form>
 
                         </div>

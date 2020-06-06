@@ -12,6 +12,7 @@
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "html2canvas": "^1.0.0-rc.5",
+    "passport": "^0.4.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
     "react-contenteditable": "^3.3.4",

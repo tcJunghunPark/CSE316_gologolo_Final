@@ -51,8 +51,7 @@ class LogoImage extends Component {
             resizing =  {top:false, right:true, bottom:true, left:false, topRight:false, bottomRight:true, bottomLeft:false, topLeft:false}
             visible = "visible"
         }
-        console.log('State', this.state)
-        console.log('Props', this.props)
+        
         return (
             <Rnd
                 style = {{
