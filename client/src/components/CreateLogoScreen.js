@@ -81,7 +81,9 @@ class CreateLogoScreen extends Component {
             text2Edit : "",
             color2Edit : "black",
             fontsize2Edit : 20,
-            textbox2edit : {},
+            textbox2edit : null,
+
+            focusedText : null,
 
             textBoxList : [
                 
@@ -188,7 +190,9 @@ class CreateLogoScreen extends Component {
             text2Edit : textBoxToUpdate.text,
             color2Edit : textBoxToUpdate.color,
             fontsize2Edit : textBoxToUpdate.fontSize,
-            textbox2edit : textBoxToUpdate
+            textbox2edit : textBoxToUpdate,
+            focusedText : textBoxToUpdate
+            
         })
         
         
@@ -260,6 +264,48 @@ class CreateLogoScreen extends Component {
 
 
         
+
+    }
+    moveUp = () => {
+        const newTextList = this.state.textBoxList;
+        const focusingText = this.state.focusedText;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                const temp = newTextList[i+1];
+                newTextList[i+1] = newTextList[i];
+                newTextList[i] = temp;
+                
+                console.log("moveUP",newTextList)
+                break;
+
+                
+            }
+        }
+        this.setState({
+            textBoxList:newTextList
+        })
+
+    }
+    moveDown = () => {
+        const newTextList = this.state.textBoxList;
+        const focusingText = this.state.focusedText;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                const temp = newTextList[i-1];
+                newTextList[i-1] = newTextList[i];
+                newTextList[i] = temp;
+                
+                console.log("moveDown",newTextList)
+                break;
+
+                
+            }
+        }
+        this.setState({
+            textBoxList:newTextList
+        })
 
     }
     
@@ -538,8 +584,8 @@ class CreateLogoScreen extends Component {
                                  min='0' max='100' placeholder="FontSize" defaultValue={this.state.fontsize2Edit} onChange={this.fontSizeboxChange}/>
                             </div>
                             <button type="button" className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Apply</button>
-                            <button type="button" style ={{backgroundColor: "red", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Move UP</button>
-                            <button type="button" style ={{backgroundColor: "blue", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Move Down</button>
+                            <button type="button" style ={{backgroundColor: "red", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.moveUp}>Move UP</button>
+                            <button type="button" style ={{backgroundColor: "blue", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.moveDown}>Move Down</button>
                             
                             
                             
