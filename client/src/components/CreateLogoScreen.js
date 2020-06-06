@@ -428,7 +428,7 @@ class CreateLogoScreen extends Component {
 
         }
         return (
-            <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
+            <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/home')}>
                 {(addLogo, { loading, error }) => (
                     <div className="container">
                         <div className="panel panel-default">

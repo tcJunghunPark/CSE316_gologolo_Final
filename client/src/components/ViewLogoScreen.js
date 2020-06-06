@@ -144,7 +144,7 @@ class ViewLogoScreen extends Component {
 
                                         
                                     </dl>
-                                    <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
+                                    <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/home')}>
                                         {(removeLogo, { loading, error }) => (
                                             <div>
                                                 <form
