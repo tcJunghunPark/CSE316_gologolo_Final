@@ -129,10 +129,13 @@ class EditLogoScreen extends Component {
             bugCounter : 0,
             imageErrorAlert : false,
 
+
+
             text2Edit : "",
             color2Edit : "black",
             fontsize2Edit : 20,
             textbox2edit : {},
+            focusedText : null,
 
             
         }
@@ -235,7 +238,8 @@ class EditLogoScreen extends Component {
             text2Edit : textBoxToUpdate.text,
             color2Edit : textBoxToUpdate.color,
             fontsize2Edit : textBoxToUpdate.fontSize,
-            textbox2edit : textBoxToUpdate
+            textbox2edit : textBoxToUpdate,
+            focusedText : textBoxToUpdate
         })
         console.log("text stored ", this.state.textbox2edit)
         
