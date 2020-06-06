@@ -324,6 +324,48 @@ class EditLogoScreen extends Component {
         
 
     }
+    moveUp = () => {
+        const newTextList = this.state.textBoxList;
+        const focusingText = this.state.focusedText;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                const temp = newTextList[i+1];
+                newTextList[i+1] = newTextList[i];
+                newTextList[i] = temp;
+                
+                console.log("moveUP",newTextList)
+                break;
+
+                
+            }
+        }
+        this.setState({
+            textBoxList:newTextList
+        })
+
+    }
+    moveDown = () => {
+        const newTextList = this.state.textBoxList;
+        const focusingText = this.state.focusedText;
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                const temp = newTextList[i-1];
+                newTextList[i-1] = newTextList[i];
+                newTextList[i] = temp;
+                
+                console.log("moveDown",newTextList)
+                break;
+
+                
+            }
+        }
+        this.setState({
+            textBoxList:newTextList
+        })
+
+    }
     
 
 
@@ -603,6 +645,8 @@ class EditLogoScreen extends Component {
                                  min='0' max='100' placeholder="FontSize" defaultValue={this.state.fontsize2Edit} onChange={this.fontSizeboxChange}/>
                             </div>
                             <button type="button" className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.editText}>Apply</button>
+                            <button type="button" style ={{backgroundColor: "red", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.moveUp}>Move UP</button>
+                            <button type="button" style ={{backgroundColor: "blue", marginLeft: 10}} className="btn btn-success" defaultValue={this.state.fontsize2Edit } onClick = {this.moveDown}>Move Down</button>
                             
                                 </div>
                                 </form>
