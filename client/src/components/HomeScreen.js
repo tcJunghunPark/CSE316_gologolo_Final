@@ -53,8 +53,8 @@ class HomeScreen extends Component {
                         <div className="container_home">
                             <div className="col s4 ">
                                 <div id = "workList">
-                                        <div id = "recentwork">
-                                            <h3>Recent Work</h3>
+                                        <div id = "recentwork"style = {{backgroundColor: "rgb(106, 37, 172)"}}>
+                                            <h3 style = {{marginLeft: "13%"}}>Recent Works</h3>
                                         </div>
                                     
                                 {data.logos.sort(function(logo1, logo2){
