@@ -28,8 +28,8 @@ class LogoTextBox extends Component {
         }
     }
 
-    handleTextDrag = (newText, newCoordi) => {
-        this.props.handleTextBoxDragCallback(newText, newCoordi)
+    handleTextDrag = (newText, newX,newY) => {
+        this.props.handleTextBoxDragCallback(newText, newX,newY)
     }
 
     handleTextChange = (event) =>{
@@ -66,16 +66,7 @@ class LogoTextBox extends Component {
                     height : this.state.style.height
                 }}
                 onDragStop={(e, d) => { 
-                    this.handleTextDrag(this.props.style.name,{ 
-                        name : this.props.style.name,
-                        text: this.props.style.text,
-                        color: this.props.style.color,
-                        fontSize: this.props.style.fontSize,
-                        background : "transparent",
-                        border : "none",
-                        x: d.x, 
-                        y: d.y 
-                    }) 
+                    this.handleTextDrag(this.props.style,d.x,d.y) 
                 }}
                 dragGrid={[15, 15]}
                 disableDragging = {disableDraggingViewScreen}
@@ -87,7 +78,7 @@ class LogoTextBox extends Component {
                     disabled={disableDraggingViewScreen} 
                     
                     
-                    onMouseUp={this.handleTextChange}
+                    onClick={this.handleTextChange}
                 />
                 <HighlightOffIcon onClick = {this.closeTextClick}style = {{visibility : visible, position : "absolute", top : "0px", right : "0px", color : "rgba(126, 126, 125, 0.788)"}}/>
             </Rnd>

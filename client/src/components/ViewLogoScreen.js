@@ -26,6 +26,7 @@ const GET_LOGO = gql`
             width
             position
             textBoxList{
+                name
                 text
                 color
                 fontSize    
@@ -58,6 +59,10 @@ class ViewLogoScreen extends Component {
 
         this.state = {}
     }
+    textBoxChange = () =>{}
+    textBoxDrag = () =>{}
+    imageDrag = () =>{}
+    
 
     createTextBox = (e) => {
         console.log("create", e)
@@ -65,6 +70,8 @@ class ViewLogoScreen extends Component {
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
                             disableDraggingBoolean = {true}
+                            handleTextChangeCallback = {this.textBoxChange} 
+                             handleTextBoxDragCallback = {this.textBoxDrag} 
                 />
 			</div>
 		)
@@ -75,6 +82,8 @@ class ViewLogoScreen extends Component {
 			<div key = {e.name.length + 3}>
                 <LogoImage style = {e} 
                           disableDraggingBoolean = {true}
+                          handleImageResizeDragCallback = {this.imageDrag}
+                          
                           
                 />
 			</div>
@@ -107,8 +116,7 @@ class ViewLogoScreen extends Component {
                         width: parseInt(data.logo.width) + "px",
                         position : "fixed"
                     }
-                    var logoTitle = ""
-                    _.map(data.logo.textBoxList, textBoxListElement => logoTitle += textBoxListElement.text)
+                    console.log("view logo tb", data.logo.textBoxList)
 
                     return (
                         <div className="container">

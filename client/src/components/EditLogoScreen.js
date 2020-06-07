@@ -140,7 +140,7 @@ class EditLogoScreen extends Component {
             
         }
         this.handleBorderWidthChange = this.handleBorderWidthChange.bind(this)
-    
+        //console.log(this.state)
     }
         
     handleBorderWidthChange = (event) =>{
@@ -232,16 +232,21 @@ class EditLogoScreen extends Component {
     }
 
     textBoxChange = (textBoxToUpdate) => {
-        console.log("this text clicked",textBoxToUpdate)
+        let fs = textBoxToUpdate.fontSize;
+        if(fs.includes("pt")){
+            fs = fs.replace("pt", "");
+        }
         
+        console.log("clicked TEXT : ", textBoxToUpdate)
         this.setState({
             text2Edit : textBoxToUpdate.text,
             color2Edit : textBoxToUpdate.color,
-            fontsize2Edit : textBoxToUpdate.fontSize,
+            fontsize2Edit : fs,
             textbox2edit : textBoxToUpdate,
             focusedText : textBoxToUpdate
+            
         })
-        console.log("text stored ", this.state.textbox2edit)
+        
         
     }
     text2editChange =(e) => {
@@ -261,19 +266,29 @@ class EditLogoScreen extends Component {
         this.setState({fontsize2Edit: e.target.value})
     }
 
-    textBoxDrag = (textBoxToUpdate, newCoordi) => {
+    textBoxDrag = (textBoxToUpdate, newX,newY) => {
         const newTextList = this.state.textBoxList;
-        const updatedBugCounter = this.state.bugCounter + 1;
+        this.setState({
+            focusedText : textBoxToUpdate
+        })
+        const focusingText = this.state.focusedText;
+        console.log("focus", focusingText)
         for(var i = 0; i < newTextList.length; i++){
-            if(newTextList[i].name == textBoxToUpdate){
-                newTextList[i] = newCoordi;
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                newTextList[i].x = newX;
+                newTextList[i].y = newY;
+                                
+                console.log("drag",newTextList[i])
                 break;
+
+                
             }
         }
         this.setState({
-            textBoxList : newTextList,
-            bugCounter : updatedBugCounter
+            textBoxList:newTextList
         })
+
     }
 
     closeImage = (imageToDelete) => {
@@ -468,7 +483,7 @@ class EditLogoScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
 
-                        console.log(data.logo.text);
+                        console.log(data.logo.name);
                         console.log("last update: ", data.logo.lastUpdate);
 
                         const style = {

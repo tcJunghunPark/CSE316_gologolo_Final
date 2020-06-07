@@ -12,7 +12,10 @@ const GET_LOGOS = gql`
       _id
       name
       textBoxList{
+          name
           text
+          color
+          fontSize
           x
           y
       }

@@ -121,7 +121,7 @@ class CreateLogoScreen extends Component {
     }
     fontSizeChange = (e) => {
         
-        this.setState({ fontSize: e.target.value + "pt" });
+        this.setState({ fontSize: e.target.value });
     }
     backgroundColorChange = (e) => {
         
@@ -184,12 +184,16 @@ class CreateLogoScreen extends Component {
     }
 
     textBoxChange = (textBoxToUpdate) => {
+        let fs = textBoxToUpdate.fontSize;
+        if(fs.includes("pt")){
+            fs = fs.replace("pt", "");
+        }
         
         console.log("clicked TEXT : ", textBoxToUpdate)
         this.setState({
             text2Edit : textBoxToUpdate.text,
             color2Edit : textBoxToUpdate.color,
-            fontsize2Edit : textBoxToUpdate.fontSize,
+            fontsize2Edit : fs,
             textbox2edit : textBoxToUpdate,
             focusedText : textBoxToUpdate
             
@@ -214,20 +218,7 @@ class CreateLogoScreen extends Component {
         this.setState({fontsize2Edit: e.target.value})
     }
 
-    textBoxDrag = (textBoxToUpdate, newCoordi) => {
-        const newTextList = this.state.textBoxList;
-        const updatedBugCounter = this.state.bugCounter + 1;
-        for(var i = 0; i < newTextList.length; i++){
-            if(newTextList[i].name == textBoxToUpdate){
-                newTextList[i] = newCoordi;
-                break;
-            }
-        }
-        this.setState({
-            textBoxList : newTextList,
-            bugCounter : updatedBugCounter
-        })
-    }
+   
 
     closeImage = (imageToDelete) => {
 		const newImageList = _.filter(this.state.imageList, imageListElement => imageListElement.name !== imageToDelete)
@@ -264,6 +255,30 @@ class CreateLogoScreen extends Component {
 
 
         
+
+    }
+    textBoxDrag = (textBoxToUpdate, newX,newY) => {
+        const newTextList = this.state.textBoxList;
+        this.setState({
+            focusedText : textBoxToUpdate
+        })
+        const focusingText = this.state.focusedText;
+        console.log("focus", focusingText)
+        for(var i = 0; i < newTextList.length; i++){
+            if(newTextList[i].name == focusingText.name && newTextList[i].text == focusingText.text){
+                console.log("catch!")
+                newTextList[i].x = newX;
+                newTextList[i].y = newY;
+                                
+                console.log("drag",newTextList[i])
+                break;
+
+                
+            }
+        }
+        this.setState({
+            textBoxList:newTextList
+        })
 
     }
     moveUp = () => {
@@ -331,7 +346,7 @@ class CreateLogoScreen extends Component {
 			<div key = {e['fontSize'] + e['color']}>
                 <LogoText style = {e} 
                              handleCloseTextBoxCallback = {this.closeText} 
-                             handleTextChangeCallback = {this.textBoxChange} 
+                             handleTextChangeCallback = {this.textBoxChange}
                              handleTextBoxDragCallback = {this.textBoxDrag} 
                 />
 			</div>
